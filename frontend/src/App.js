@@ -18,6 +18,7 @@ import AdminModelImagesPage from './pages/AdminModelImagesPage';
 import AdminAccountPage from './pages/AdminAccountPage';
 import AdminContactMessagePage from './pages/AdminContactMessagePage';
 import AdminScoutMediaPage from './pages/AdminScoutMediaPage';
+import ArticlesPage from './pages/ArticlesPage';
 import Article from './pages/Article';
 import TestModelPage from './pages/TestModelPage';
 import ModelProfilePage from './pages/ModelProfilePage';
@@ -109,6 +110,10 @@ function App() {
           <Route
             path={ROUTES.ADMIN_SCOUT_MEDIA}
             element={<AdminScoutMediaPage />}
+          />
+          <Route
+            path={ROUTES.ARTICLES}
+            element={<ArticlesPage requireAdmin />}
           />
           <Route
             path={ROUTES.ARTICLE}

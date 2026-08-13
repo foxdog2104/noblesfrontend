@@ -4,10 +4,14 @@ import ArticleCard from '../components/ArticleCard';
 import { getArticles } from '../services/articlesService';
 import './ArticlesPage.css';
 
+const ADMIN_EMAILS = ['televisionneverenough@gmail.com', 'test@nobles.com', 'noblesadmintest@gmail.com'];
+
 // Shows the member-only Club Nobles article library with a simple search box.
-const ArticlesPage = ({ embedded = false }) => {
+const ArticlesPage = ({ embedded = false, requireAdmin = false }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [articles, setArticles] = useState([]);
+  const currentUser = JSON.parse(localStorage.getItem('noblesTestUser') || 'null');
+  const isAdmin = ADMIN_EMAILS.includes(currentUser?.email?.toLowerCase());
 
   useEffect(() => {
     const loadArticles = async () => {
@@ -37,6 +41,20 @@ const ArticlesPage = ({ embedded = false }) => {
       || article.content.toLowerCase().includes(searchTerm.toLowerCase())
     )
     : articles;
+
+  if (requireAdmin && !isAdmin) {
+    return (
+      <MainLayout>
+        <main className="articles-page">
+          <header className="articles-header">
+            <p className="articles-eyebrow">Admin</p>
+            <h1>Access Required</h1>
+            <p className="articles-subtitle">Log in with an admin account to view articles.</p>
+          </header>
+        </main>
+      </MainLayout>
+    );
+  }
 
   const content = (
       <main className={`articles-page${embedded ? ' articles-page-embedded' : ''}`}>

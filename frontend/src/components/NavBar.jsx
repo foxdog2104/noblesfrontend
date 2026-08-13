@@ -79,6 +79,7 @@ const NavBar = () => {
             <>
               <button type="button" className="nav-link nav-button" onClick={handleLogout}>Log Out</button>
               <Link to={ROUTES.SETTINGS} className="nav-link">Settings</Link>
+              {isAdmin && <Link to={ROUTES.ARTICLES} className="nav-link">Articles</Link>}
               {isAdmin && <Link to={ROUTES.ADMIN} className="nav-link">Admin</Link>}
             </>
           ) : (
