@@ -223,6 +223,6 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Membership API running at http://localhost:${PORT}`);
+  console.log(`Membership API running at http://white-cliff-0d1d7a20f.7.azurestaticapps.net:${PORT}`);
 });
 
