@@ -3,7 +3,7 @@ import './ChatWidget.css';
 
 const CHAT_API_URL =
   process.env.REACT_APP_CHAT_API_URL ??
-  'http://localhost:8080/api/v1/chat/messages';
+  'http://nobleswebapp-fgb2dmh4evf6bzh8.eastus2-01.azurewebsites.net/api/v1/chat/messages';
 
 const ChatWidget = () => {
   const [open, setOpen] = useState(false);
