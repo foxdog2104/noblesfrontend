@@ -5,7 +5,7 @@ import { getArticles } from '../services/articlesService';
 import './ArticlesPage.css';
 
 // Shows the member-only Club Nobles article library with a simple search box.
-const ArticlesPage = () => {
+const ArticlesPage = ({ embedded = false }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [articles, setArticles] = useState([]);
 
@@ -38,9 +38,8 @@ const ArticlesPage = () => {
     )
     : articles;
 
-  return (
-    <MainLayout>
-      <main className="articles-page">
+  const content = (
+      <main className={`articles-page${embedded ? ' articles-page-embedded' : ''}`}>
         <header className="articles-header">
           <p className="articles-eyebrow">Member Library</p>
           <h1>Club Nobles Articles</h1>
@@ -65,6 +64,15 @@ const ArticlesPage = () => {
           )}
         </section>
       </main>
+  );
+
+  if (embedded) {
+    return content;
+  }
+
+  return (
+    <MainLayout>
+      {content}
     </MainLayout>
   );
 };

@@ -6,6 +6,11 @@
   padding: 96px 40px 80px;
 }
 
+.articles-page-embedded {
+  min-height: 0;
+  padding-bottom: 56px;
+}
+
 .articles-header {
   margin: 0 auto 42px;
   max-width: 860px;

@@ -13,6 +13,8 @@ import { checkClubNoblesMembership } from '../services/membershipService';
 import { ROUTES } from '../constants';
 import './ClubNoblesPage.css';
 
+const ADMIN_EMAILS = ['televisionneverenough@gmail.com', 'test@nobles.com', 'noblesadmintest@gmail.com'];
+
 // Renders the Club Nobles membership page with gallery, timeline, and checkout selection.
 async function openCheckoutPage() {
   //my internet is down rn but please add the api key here when it's back up, or figure out the env file stuff
@@ -42,6 +44,7 @@ const ClubNoblesPage = () => {
   const [activeClubImageIndex, setActiveClubImageIndex] = useState(null);
   const [selectedPaymentPlan] = useState('one');
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const carouselRef = useRef(null);
   const pathwayRef = useRef(null);
   const navigate = useNavigate();
@@ -88,6 +91,7 @@ const ClubNoblesPage = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setIsSignedIn(Boolean(user));
+      setIsAdmin(ADMIN_EMAILS.includes(user?.email?.toLowerCase() || ''));
     });
 
     return unsubscribe;
@@ -110,7 +114,7 @@ const ClubNoblesPage = () => {
     return null;
   }
 
-  if (hasClubMembership) {
+  if (hasClubMembership && !isAdmin) {
     return <ArticlesPage />;
   }
 
@@ -134,6 +138,8 @@ const ClubNoblesPage = () => {
   return (
     <MainLayout>
       <main className="club-nobles-page">
+        {isAdmin && <ArticlesPage embedded />}
+
         <section className="club-nobles-intro">
           <div className="club-nobles-hero-copy">
             <p className="club-nobles-eyebrow">The Nobles Management</p>
