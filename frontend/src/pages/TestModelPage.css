@@ -1,0 +1,74 @@
+.fullWrapper {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.headerContainer {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.headerAgency {
+    display: flex;
+    padding:10px;
+    font-weight: 700;
+    font-size: 20px;
+    position: relative;
+    justify-content:flex-start;
+}
+.headerName {
+    display: flex;
+    padding:10px;
+    font-weight: 700;
+    font-size: 20px;
+    align-self:center;
+    position: relative;
+}
+.headerLocation {
+    display: flex;
+    padding:10px;
+    font-weight: 700;
+    font-size: 20px;
+    justify-self: flex-end;
+    position:relative;
+    text-align: right;
+}
+.modelInfo {
+    display: flex;
+    flex-direction: column;
+    font-weight: 700;
+    font-size: 20px;
+}
+.modelPhoto {
+    display: flex;
+    padding:10px;
+    justify-self: flex-end;
+    position:relative;
+}
+.modelBio {
+    display: flex;
+    flex-direction: column;
+    padding-left:10px;
+    font-weight: 700;
+    font-size: 20px;
+    justify-self: flex-end;
+    align-self: flex-start;
+    position:relative;
+    text-align: left;
+    width: 300px;
+    color:gray;
+}
+.infoWrapper {
+    display:flex;
+    flex-direction:row;
+    font-weight: 700;
+}
+.infoReal{
+    display:flex;
+    color:black;
+    font-weight: 700;
+}

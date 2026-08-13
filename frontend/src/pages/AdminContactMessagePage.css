@@ -1,0 +1,159 @@
+.admin-contact-message-page {
+  background: var(--theme-bg);
+  box-sizing: border-box;
+  color: var(--theme-text);
+  min-height: calc(100vh - 64px);
+  padding: 96px 40px 80px;
+}
+
+.admin-contact-message-centered {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-contact-message-header,
+.admin-contact-message-access,
+.admin-contact-message-shell {
+  margin: 0 auto;
+  max-width: 900px;
+}
+
+.admin-contact-message-header,
+.admin-contact-message-access {
+  margin-bottom: 34px;
+  text-align: center;
+}
+
+.admin-contact-message-header p,
+.admin-contact-message-access p,
+.admin-contact-message-meta span,
+.admin-contact-message-body span {
+  color: var(--theme-text-muted);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.admin-contact-message-title-row {
+  align-items: center;
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  margin: 14px 0 18px;
+}
+
+.admin-contact-message-title-row h1,
+.admin-contact-message-access h1 {
+  color: var(--theme-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.admin-contact-message-back {
+  align-items: center;
+  display: flex;
+  height: 34px;
+  justify-content: center;
+  opacity: 0.82;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  width: 34px;
+}
+
+.admin-contact-message-back:hover {
+  opacity: 1;
+  transform: translateX(-4px);
+}
+
+.admin-contact-message-back img {
+  display: block;
+  filter: var(--theme-icon-filter, none);
+  height: 22px;
+  width: 22px;
+}
+
+.admin-contact-message-header > span,
+.admin-contact-message-access span,
+.admin-contact-message-access a,
+.admin-contact-message-meta p,
+.admin-contact-message-body p {
+  color: var(--theme-text-muted);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 0;
+  text-decoration: none;
+}
+
+.admin-contact-message-shell {
+  border-top: 1px solid var(--theme-border-soft);
+  display: grid;
+  gap: 28px;
+  padding-top: 28px;
+}
+
+.admin-contact-message-meta {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-contact-message-meta div,
+.admin-contact-message-body {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-contact-message-meta p {
+  color: var(--theme-text);
+  overflow-wrap: anywhere;
+}
+
+.admin-contact-message-body p {
+  color: var(--theme-text);
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+.admin-contact-message-button {
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text);
+  display: inline-block;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  justify-self: start;
+  letter-spacing: 0.15em;
+  padding: 14px 18px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.admin-contact-message-button:hover {
+  background: var(--theme-text);
+  color: var(--theme-bg);
+}
+
+@media (max-width: 768px) {
+  .admin-contact-message-page {
+    min-height: calc(100vh - 56px);
+    padding: 72px 20px 56px;
+  }
+
+  .admin-contact-message-title-row h1,
+  .admin-contact-message-access h1 {
+    font-size: 38px;
+  }
+
+  .admin-contact-message-meta {
+    grid-template-columns: 1fr;
+  }
+}

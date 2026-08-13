@@ -1,0 +1,290 @@
+.profile-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px 100px;
+  box-sizing: border-box;
+}
+
+/* ─── Header ─────────────────────────────────────── */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.profile-agency {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #aaa;
+  margin: 0;
+}
+
+.profile-name {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+  line-height: 1;
+}
+
+.profile-location {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888;
+  margin: 0;
+}
+
+.profile-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #000;
+  margin-bottom: 48px;
+}
+
+/* ─── Body (stats + photo + bio) ─────────────────── */
+.profile-body {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+  margin-bottom: 72px;
+}
+
+.profile-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-stat-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.profile-stat-label {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+.profile-stat-value {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: #000;
+}
+
+.profile-instagram {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: #000;
+  text-decoration: none;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 1px;
+  margin-top: 8px;
+  width: fit-content;
+}
+
+.profile-instagram:hover {
+  border-bottom-color: #000;
+}
+
+.profile-hero-wrap {
+  width: 100%;
+}
+
+.profile-hero-img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+.profile-bio {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.profile-bio-label {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #aaa;
+  margin: 0;
+}
+
+.profile-bio-text {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: #333;
+  margin: 0;
+}
+
+/* ─── Section headers ────────────────────────────── */
+.profile-section {
+  margin-bottom: 56px;
+}
+
+.profile-section-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.profile-section-tag {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #000;
+  white-space: nowrap;
+}
+
+.profile-section-line {
+  flex: 1;
+  height: 1px;
+  background-color: #000;
+}
+
+/* ─── Runway shows ───────────────────────────────── */
+.profile-shows-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.profile-show-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-show-name {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: #000;
+}
+
+.profile-show-season {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+/* ─── Portfolio grid ─────────────────────────────── */
+.profile-portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.profile-portfolio-item {
+  overflow: hidden;
+}
+
+.profile-portfolio-img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.profile-portfolio-item:hover .profile-portfolio-img {
+  transform: scale(1.03);
+}
+
+/* ─── Not found ──────────────────────────────────── */
+.profile-not-found {
+  padding: 120px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-not-found p {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #aaa;
+}
+
+.profile-back {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #000;
+  text-decoration: none;
+  border-bottom: 1px solid #000;
+  padding-bottom: 1px;
+}
+
+/* ─── Responsive ─────────────────────────────────── */
+@media (max-width: 900px) {
+  .profile-body {
+    grid-template-columns: 160px 1fr;
+  }
+
+  .profile-bio {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-page {
+    padding: 40px 20px 80px;
+  }
+
+  .profile-name {
+    font-size: 20px;
+  }
+
+  .profile-body {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-portfolio-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+

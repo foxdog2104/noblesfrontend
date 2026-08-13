@@ -1,0 +1,96 @@
+.club-success-page {
+  min-height: calc(100vh - 64px);
+  padding: 72px 40px;
+  background: var(--theme-bg);
+  color: var(--theme-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.club-success-card {
+  width: min(720px, 100%);
+  border: 1px solid var(--theme-border-soft);
+  background: var(--theme-surface);
+  padding: 64px 44px;
+  text-align: center;
+}
+
+.club-success-eyebrow,
+.club-success-message,
+.club-success-link {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.club-success-eyebrow {
+  color: var(--theme-text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0 0 18px;
+}
+
+.club-success-card h1 {
+  color: var(--theme-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  margin: 0 0 18px;
+}
+
+.club-success-welcome {
+  color: var(--theme-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0 0 22px;
+}
+
+.club-success-amount {
+  color: var(--theme-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+
+.club-success-message {
+  max-width: 460px;
+  margin: 0 auto 30px;
+  color: var(--theme-text-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.club-success-link {
+  display: inline-flex;
+  border: 1px solid var(--theme-border);
+  background: var(--theme-button-bg);
+  color: var(--theme-button-text);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 14px 20px;
+}
+
+.club-success-link:hover {
+  background: transparent;
+  color: var(--theme-text);
+}
+
+@media (max-width: 768px) {
+  .club-success-page {
+    min-height: calc(100vh - 56px);
+    padding: 40px 20px;
+  }
+
+  .club-success-card {
+    padding: 44px 24px;
+  }
+}

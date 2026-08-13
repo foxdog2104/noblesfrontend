@@ -1,0 +1,279 @@
+.admin-article-edit-page {
+  background: var(--theme-bg);
+  box-sizing: border-box;
+  color: var(--theme-text);
+  min-height: calc(100vh - 64px);
+  padding: 96px 40px 80px;
+}
+
+.admin-article-edit-centered {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-article-edit-header,
+.admin-article-edit-access {
+  margin: 0 auto 34px;
+  max-width: 1120px;
+  text-align: center;
+}
+
+.admin-article-edit-header p,
+.admin-article-edit-access p,
+.admin-article-field span,
+.admin-article-upload-title {
+  color: var(--theme-text-muted);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.admin-article-edit-title-row {
+  align-items: center;
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  margin: 14px 0 18px;
+}
+
+.admin-article-edit-title-row h1 {
+  margin: 0;
+}
+
+.admin-article-edit-back {
+  align-items: center;
+  display: flex;
+  height: 34px;
+  justify-content: center;
+  opacity: 0.82;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  width: 34px;
+}
+
+.admin-article-edit-back:hover {
+  opacity: 1;
+  transform: translateX(-4px);
+}
+
+.admin-article-edit-back img {
+  display: block;
+  filter: var(--theme-icon-filter, none);
+  height: 22px;
+  width: 22px;
+}
+
+.admin-article-edit-header h1,
+.admin-article-edit-access h1 {
+  color: var(--theme-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.admin-article-edit-header span,
+.admin-article-edit-access span,
+.admin-article-edit-access a {
+  color: var(--theme-text-muted);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.admin-article-edit-layout {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(220px, 320px) minmax(0, 760px);
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 1120px;
+}
+
+.admin-article-cover-panel,
+.admin-article-edit-form {
+  border-top: 1px solid var(--theme-border-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 24px;
+}
+
+.admin-article-field,
+.admin-article-upload-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-article-cover-panel-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.admin-article-field input,
+.admin-article-field textarea {
+  color-scheme: var(--theme-color-scheme, light);
+  background: transparent;
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  outline: none;
+  padding: 12px;
+}
+
+.admin-article-field textarea {
+  min-height: 260px;
+  resize: vertical;
+}
+
+.admin-article-upload-button {
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text);
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 12px 18px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.admin-article-upload-button:hover {
+  background: var(--theme-text);
+  color: var(--theme-bg);
+}
+
+.admin-article-upload-button input {
+  display: none;
+}
+
+.admin-article-upload-name {
+  color: var(--theme-text-muted);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.admin-article-cover-preview,
+.admin-article-cover-placeholder {
+  aspect-ratio: 4 / 5;
+  background: var(--theme-surface-muted, #f4f4f4);
+  border-bottom: 1px solid var(--theme-border-soft);
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
+.admin-article-toggle-row {
+  align-items: center;
+  color: var(--theme-text-muted);
+  cursor: pointer;
+  display: flex;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  gap: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.admin-article-toggle-row input[type="checkbox"] {
+  appearance: none;
+  background: var(--theme-surface-muted, #f4f4f4);
+  border: 0;
+  border-radius: 999px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  flex: 0 0 36px;
+  height: 18px;
+  margin: 0;
+  min-width: 36px;
+  padding: 0;
+  position: relative;
+  transition: background 0.25s ease;
+  width: 36px;
+}
+
+.admin-article-toggle-row input[type="checkbox"]::before {
+  background: #b3261e;
+  border-radius: 50%;
+  content: '';
+  display: block;
+  height: 14px;
+  left: 2px;
+  position: absolute;
+  top: 2px;
+  transition: transform 0.25s ease, background 0.25s ease;
+  width: 14px;
+}
+
+.admin-article-toggle-row input[type="checkbox"]:checked::before {
+  background: #16833a;
+  transform: translateX(18px);
+}
+
+.admin-article-edit-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-article-edit-actions button,
+.admin-article-edit-actions a {
+  background: transparent;
+  border: 1px solid var(--theme-border);
+  box-sizing: border-box;
+  color: var(--theme-text);
+  cursor: pointer;
+  flex: 1;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 14px 18px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.admin-article-edit-actions button:hover,
+.admin-article-edit-actions a:hover {
+  background: var(--theme-text);
+  color: var(--theme-bg);
+}
+
+@media (max-width: 900px) {
+  .admin-article-edit-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-article-edit-page {
+    min-height: calc(100vh - 56px);
+    padding: 72px 20px 56px;
+  }
+
+  .admin-article-edit-header h1,
+  .admin-article-edit-access h1 {
+    font-size: 38px;
+  }
+
+  .admin-article-edit-actions {
+    flex-direction: column;
+  }
+}
+
+

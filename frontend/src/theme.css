@@ -1,0 +1,227 @@
+:root {
+  --theme-bg: #ffffff;
+  --theme-surface: #ffffff;
+  --theme-surface-muted: #f0f0f0;
+  --theme-text: #000000;
+  --theme-text-muted: #777777;
+  --theme-text-soft: #aaaaaa;
+  --theme-border: #000000;
+  --theme-border-soft: #d7d7d7;
+  --theme-button-bg: #000000;
+  --theme-button-bg-hover: #333333;
+  --theme-button-text: #ffffff;
+  --theme-accent: #7a168a;
+}
+
+html[data-theme='dark'] {
+  --theme-bg: #0f0f11;
+  --theme-surface: #171719;
+  --theme-surface-muted: #242428;
+  --theme-text: #f5f1ec;
+  --theme-text-muted: #b9b0a8;
+  --theme-text-soft: #8f8882;
+  --theme-border: #f5f1ec;
+  --theme-border-soft: #3a3633;
+  --theme-button-bg: #f5f1ec;
+  --theme-button-bg-hover: #d8d0c8;
+  --theme-button-text: #0f0f11;
+  --theme-accent: #7a168a;
+}
+
+body {
+  color: var(--theme-text);
+  background-color: var(--theme-bg);
+}
+
+.App,
+.home-page,
+.models-page,
+.scouted-page,
+.contact-page,
+.login-page,
+.signup-page,
+.settings-page,
+.profile-page,
+.profile-not-found {
+  color: var(--theme-text);
+  background-color: var(--theme-bg);
+}
+
+.navbar {
+  background-color: var(--theme-surface);
+  border-bottom-color: var(--theme-border);
+}
+
+.nav-link,
+.section-tag,
+.roster-view-all,
+.highlights-title,
+.models-title,
+.model-card-firstname,
+.model-card-lastname,
+.profile-name,
+.profile-stat-value,
+.profile-instagram,
+.profile-section-tag,
+.profile-show-name,
+.profile-back,
+.scouted-title,
+.form-section-label span,
+.form-field label,
+.radio-label,
+.upload-label-btn span,
+.contact-section-label,
+.contact-detail-label,
+.contact-form-field label,
+.contact-detail-link,
+.contact-detail-name,
+.contact-detail-text,
+.contact-scouted-link,
+.login-title,
+.signup-title,
+.signup-subtitle,
+.form-label,
+.form-input,
+.footer-link,
+.password-toggle,
+.models-search,
+.form-select,
+.contact-form-field input,
+.contact-form-field textarea,
+.profile-not-found p,
+.infoReal {
+  color: var(--theme-text);
+}
+
+.profile-agency,
+.profile-location,
+.profile-stat-label,
+.profile-bio-label,
+.profile-show-season,
+.models-empty,
+.scouted-subtitle,
+.upload-filename,
+.field-hint,
+.contact-intro,
+.contact-detail-note,
+.login-subtitle,
+.divider-text,
+.password-requirements {
+  color: var(--theme-text-muted);
+}
+
+.profile-bio-text {
+  color: var(--theme-text-muted);
+}
+
+.login-panel,
+.login-right,
+.signup-panel,
+.signup-right,
+.social-button {
+  background-color: var(--theme-surface);
+}
+
+.signup-panel,
+.signup-right,
+.model-card-img-wrap,
+.model-card-placeholder,
+.divider-line,
+.contact-map {
+  background-color: var(--theme-surface-muted);
+}
+
+.login-panel,
+.signup-panel,
+.social-button,
+.contact-scouted-callout,
+.upload-label-btn {
+  border-color: var(--theme-border);
+}
+
+.profile-divider,
+.profile-section-line,
+.form-section-line {
+  background-color: var(--theme-border);
+}
+
+.models-search,
+.form-input,
+.form-field input[type='text'],
+.form-field input[type='email'],
+.form-field input[type='tel'],
+.form-field input[type='date'],
+.form-select,
+.contact-form-field input,
+.contact-form-field textarea,
+.profile-instagram,
+.contact-detail,
+.contact-map {
+  border-bottom-color: var(--theme-border-soft);
+}
+
+.models-search:focus,
+.form-input:focus,
+.form-field input:focus,
+.form-select:focus,
+.contact-form-field input:focus,
+.contact-form-field textarea:focus,
+.profile-instagram:hover,
+.contact-detail-link:hover,
+.footer-link:hover {
+  border-bottom-color: var(--theme-border);
+}
+
+.signin-button,
+.signup-button,
+.scouted-submit,
+.contact-submit {
+  color: var(--theme-button-text);
+  background-color: var(--theme-button-bg);
+}
+
+.signin-button:hover,
+.signup-button:hover,
+.scouted-submit:hover,
+.contact-submit:hover {
+  background-color: var(--theme-button-bg-hover);
+}
+
+.upload-label-btn:hover {
+  background-color: var(--theme-button-bg);
+}
+
+.upload-label-btn:hover span {
+  color: var(--theme-button-text);
+}
+
+.radio-label input[type='radio'] {
+  accent-color: var(--theme-border);
+}
+
+.form-input:focus,
+.footer-link:hover {
+  color: var(--theme-text);
+}
+
+.form-input::placeholder,
+.models-search::placeholder,
+.form-field input::placeholder {
+  color: var(--theme-text-soft);
+}
+
+.footer-link:hover,
+.signup-footer .footer-link:hover {
+  color: var(--theme-accent);
+}
+
+html[data-theme='dark'] .icon-img {
+  filter: invert(1);
+}
+
+html[data-theme='dark'] .forgot-password-link,
+html[data-theme='dark'] .forgot-password-link:hover,
+html[data-theme='dark'] .forgot-password-link:focus {
+  color: #84b8ff;
+  border-bottom-color: #84b8ff;
+}

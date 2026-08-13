@@ -1,0 +1,690 @@
+.club-nobles-page {
+  position: relative;
+  min-height: calc(100vh - 64px);
+  padding: 80px 40px;
+  background: var(--theme-bg);
+  color: var(--theme-text);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.club-nobles-intro {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 64px;
+}
+
+.club-nobles-hero-copy {
+  flex: 1 1 52%;
+  text-align: center;
+}
+
+.club-nobles-details {
+  flex: 1 1 40%;
+  border-left: 1px solid var(--theme-border-soft);
+  padding-left: 40px;
+}
+
+.club-nobles-details h2 {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--theme-text);
+  margin: 0 0 18px;
+}
+
+.club-nobles-details p {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--theme-text-muted);
+  margin: 0 0 18px;
+}
+
+.club-nobles-details p:last-child {
+  margin-bottom: 0;
+}
+
+.club-nobles-learn-more-button {
+  margin-top: 10px;
+  border: 1px solid var(--theme-border);
+  background: var(--theme-button-bg);
+  color: var(--theme-button-text);
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 14px 20px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.club-nobles-learn-more-button span {
+  display: inline-block;
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+}
+
+.club-nobles-learn-more-button:hover {
+  background: transparent;
+  color: var(--theme-text);
+}
+
+.club-nobles-learn-more-button:hover span {
+  transform: translateY(3px);
+}
+
+.club-nobles-carousel {
+  width: calc(100% + 80px);
+  margin-top: 72px;
+  margin-left: -40px;
+  margin-right: -40px;
+  overflow: hidden;
+}
+
+.club-nobles-carousel-heading,
+.club-nobles-carousel-subheading {
+  width: min(1180px, calc(100% - 80px));
+  margin-left: auto;
+  margin-right: auto;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--theme-text);
+}
+
+.club-nobles-carousel-heading {
+  margin-top: 0;
+  margin-bottom: 28px;
+}
+
+.club-nobles-carousel-subheading {
+  margin-top: 28px;
+  margin-bottom: 0;
+}
+
+.club-nobles-carousel-track {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  animation: clubNoblesSlide 34s linear infinite;
+}
+
+.club-nobles-carousel-frame {
+  width: clamp(240px, 24vw, 360px);
+  aspect-ratio: 4 / 5;
+  border: 0;
+  overflow: hidden;
+  background: var(--theme-surface-muted);
+  cursor: zoom-in;
+  padding: 0;
+}
+
+.club-nobles-carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.club-nobles-carousel-frame:hover .club-nobles-carousel-image {
+  filter: contrast(1.04);
+  transform: scale(1.03);
+}
+
+.club-nobles-pathway {
+  width: min(1180px, 100%);
+  margin: 88px auto 0;
+  scroll-margin-top: 88px;
+  display: grid;
+  grid-template-columns: minmax(220px, 0.55fr) minmax(0, 1fr);
+  gap: 64px;
+  align-items: start;
+}
+
+.club-nobles-pathway-header {
+  position: sticky;
+  top: 92px;
+}
+
+.club-nobles-pathway-eyebrow,
+.club-nobles-timeline-meta {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--theme-text-muted);
+  margin: 0;
+}
+
+.club-nobles-pathway-header h2 {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--theme-text);
+  margin: 16px 0 0;
+}
+
+.club-nobles-timeline {
+  position: relative;
+  display: grid;
+  gap: 36px;
+}
+
+.club-nobles-timeline::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 22px;
+  width: 1px;
+  background: var(--theme-border-soft);
+}
+
+.club-nobles-prep-card {
+  border: 1px solid var(--theme-border-soft);
+  background: var(--theme-surface);
+  padding: 28px;
+  margin-top: 28px;
+}
+
+.club-nobles-prep-card-blurred {
+  border: 1px solid var(--theme-border-soft);
+  background: var(--theme-surface);
+  padding: 28px;
+  margin-top: 28px;
+  filter: blur(4px)
+}
+.club-nobles-prep-kicker {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--theme-text-muted);
+  margin: 0 0 18px;
+}
+
+.club-nobles-payment-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--theme-border);
+  margin-bottom: 28px;
+}
+
+.club-nobles-payment-option {
+  border: 0;
+  border-right: 1px solid var(--theme-border);
+  background: transparent;
+  color: var(--theme-text);
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 12px 14px;
+}
+
+.club-nobles-payment-option:last-child {
+  border-right: 0;
+}
+
+.club-nobles-payment-option.active {
+  background: var(--theme-button-bg);
+  color: var(--theme-button-text);
+}
+
+.club-nobles-prep-card-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 2px;
+  margin-bottom: 22px;
+}
+
+.club-nobles-prep-title-group {
+  flex: 0 1 auto;
+}
+
+.club-nobles-prep-purchase-group {
+  flex: 0 0 auto;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.club-nobles-prep-card-header h3 {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--theme-text);
+  margin: 0 0 12px;
+}
+
+.club-nobles-prep-card-header p {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--theme-text);
+  margin: 0 0 4px;
+}
+
+.club-nobles-prep-card-header span {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  color: var(--theme-text-muted);
+  margin-bottom: 14px;
+}
+
+.club-nobles-purchase-button {
+  border: 1px solid var(--theme-border);
+  background: var(--theme-button-bg);
+  color: var(--theme-button-text);
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 14px 20px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.club-nobles-purchase-button:hover {
+  background: transparent;
+  color: var(--theme-text);
+}
+
+.club-nobles-purchase-button-disabled {
+  border: 1px solid var(--theme-border);
+  background: var(--theme-button-bg);
+  color: var(--theme-button-text);
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 14px 20px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.club-nobles-prep-description {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--theme-text-muted);
+  margin: 0 0 20px;
+}
+
+.club-nobles-prep-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.club-nobles-prep-list li {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  color: var(--theme-text);
+}
+
+.club-nobles-prep-list li::before {
+  content: '✓';
+  margin-right: 10px;
+}
+
+.club-nobles-timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 24px;
+}
+
+.club-nobles-timeline-number {
+  position: relative;
+  z-index: 1;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--theme-border);
+  background: var(--theme-bg);
+  color: var(--theme-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.club-nobles-timeline-content {
+  border-top: 1px solid var(--theme-border-soft);
+  padding-top: 20px;
+}
+
+.club-nobles-timeline-content h3 {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--theme-text);
+  margin: 8px 0 14px;
+}
+
+.club-nobles-timeline-content p {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--theme-text-muted);
+  margin: 0 0 14px;
+}
+
+.club-nobles-timeline-content p:last-child {
+  margin-bottom: 0;
+}
+
+.club-nobles-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  padding: 36px;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: clubNoblesLightboxFadeIn 0.24s ease forwards;
+}
+
+.club-nobles-lightbox-content {
+  max-width: min(100%, 980px);
+  max-height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 18px;
+  animation: clubNoblesLightboxImageIn 0.32s ease forwards;
+}
+
+.club-nobles-lightbox-image {
+  max-width: 100%;
+  max-height: calc(100vh - 150px);
+  object-fit: contain;
+  display: block;
+}
+
+.club-nobles-lightbox-caption {
+  color: #fff;
+  text-align: left;
+}
+
+.club-nobles-lightbox-name,
+.club-nobles-lightbox-credit {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0;
+}
+
+.club-nobles-lightbox-name {
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.club-nobles-lightbox-credit {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.club-nobles-lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  transition: border-color 0.2s ease;
+}
+
+.club-nobles-lightbox-close:hover {
+  border-color: #fff;
+}
+
+.club-nobles-lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  width: 48px;
+  height: 72px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.24);
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 300;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.club-nobles-lightbox-arrow:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.72);
+}
+
+.club-nobles-lightbox-arrow-left {
+  left: 28px;
+}
+
+.club-nobles-lightbox-arrow-right {
+  right: 28px;
+}
+
+@keyframes clubNoblesSlide {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 7px));
+  }
+}
+
+@keyframes clubNoblesLightboxFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes clubNoblesLightboxImageIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.club-nobles-eyebrow {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--theme-text-muted);
+  margin: 0 0 16px;
+}
+
+.club-nobles-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: var(--theme-text);
+  margin: 0 0 20px;
+  line-height: 1;
+}
+
+.club-nobles-copy {
+  max-width: 760px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--theme-text);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .club-nobles-page {
+    min-height: calc(100vh - 56px);
+    padding: 56px 20px;
+  }
+
+  .club-nobles-intro {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .club-nobles-details {
+    border-left: 0;
+    border-top: 1px solid var(--theme-border-soft);
+    padding-left: 0;
+    padding-top: 28px;
+  }
+
+  .club-nobles-carousel {
+    width: calc(100% + 40px);
+    margin-top: 48px;
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+
+  .club-nobles-carousel-heading,
+  .club-nobles-carousel-subheading {
+    width: calc(100% - 40px);
+    font-size: 48px;
+  }
+
+  .club-nobles-carousel-track {
+    gap: 10px;
+    animation-duration: 28s;
+  }
+
+  .club-nobles-carousel-frame {
+    width: 240px;
+  }
+
+  .club-nobles-pathway {
+    margin-top: 56px;
+    scroll-margin-top: 72px;
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .club-nobles-pathway-header {
+    position: static;
+  }
+
+  .club-nobles-pathway-header h2 {
+    font-size: 48px;
+  }
+
+  .club-nobles-timeline {
+    gap: 30px;
+  }
+
+  .club-nobles-prep-card {
+    padding: 22px;
+  }
+
+  .club-nobles-prep-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .club-nobles-prep-purchase-group {
+    min-width: 0;
+  }
+
+  .club-nobles-prep-card-header h3 {
+    font-size: 48px;
+  }
+
+  .club-nobles-timeline-item {
+    gap: 16px;
+  }
+
+  .club-nobles-lightbox {
+    padding: 20px;
+  }
+
+  .club-nobles-lightbox-content {
+    gap: 14px;
+  }
+
+  .club-nobles-lightbox-image {
+    max-height: calc(100vh - 130px);
+  }
+
+  .club-nobles-lightbox-arrow {
+    width: 40px;
+    height: 56px;
+    font-size: 48px;
+  }
+
+  .club-nobles-lightbox-arrow-left {
+    left: 8px;
+  }
+
+  .club-nobles-lightbox-arrow-right {
+    right: 8px;
+  }
+
+  .club-nobles-title {
+    font-size: 48px;
+  }
+}

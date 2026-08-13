@@ -1,0 +1,63 @@
+.model-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  background-color: var(--theme-bg);
+}
+
+.model-card-img-wrap {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background-color: var(--theme-surface-muted);
+}
+
+.model-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+.model-card:hover .model-card-img {
+  opacity: 0.85;
+}
+
+.model-card-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: var(--theme-surface-muted);
+}
+
+.model-card-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 8px 20px;
+  text-align: center;
+}
+
+.model-card-firstname {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--theme-text);
+  line-height: 1;
+}
+
+.model-card-lastname {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--theme-text);
+  line-height: 1.2;
+}
+

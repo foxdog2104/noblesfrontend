@@ -1,0 +1,762 @@
+.home-page {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* ─── Hero ─────────────────────────────────────── */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 80px);
+  overflow: hidden;
+  background-color: #111;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 50%);
+}
+
+.hero-caption {
+  position: absolute;
+  bottom: 48px;
+  left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hero-eyebrow {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.hero-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--fs-lg);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+  line-height: 1;
+}
+
+/* ─── Section shared ────────────────────────────── */
+.section-tag {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #000;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.section-line {
+  display: none;
+}
+
+/* ─── Roster section ────────────────────────────── */
+.roster-section {
+  max-width: 1400px;
+  margin: 60px auto 0;
+  padding: 0 40px;
+}
+
+.roster-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.roster-view-all {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  background: #5B006B;
+  padding: 10px 22px;
+  transition: background 0.2s ease;
+}
+
+.roster-view-all:hover {
+  background: #3d0049;
+}
+
+/* ─── Talent Divisions ──────────────────────────── */
+.highlights-section {
+  max-width: 1400px;
+  margin: 60px auto 0;
+  padding: 0 40px;
+}
+
+.highlights-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0 0 20px;
+  line-height: 1;
+  text-align: left;
+}
+
+.highlights-gallery {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.95fr) minmax(320px, 1.35fr) minmax(280px, 1.15fr);
+  gap: 16px;
+  align-items: stretch;
+}
+
+.highlights-stack {
+  display: grid;
+  grid-template-rows: 1fr 1.12fr;
+  gap: 16px;
+}
+
+.highlights-stack-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.highlight-image-frame {
+  min-height: 180px;
+  border: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  cursor: zoom-in;
+}
+
+.highlight-image-frame-large,
+.highlight-image-frame-wide {
+  height: 520px;
+}
+
+.highlight-image-frame-short-wide {
+  height: 250px;
+}
+
+.highlight-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.highlight-image-frame:hover .highlight-image {
+  filter: contrast(1.04);
+  transform: scale(1.03);
+}
+
+.highlight-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  padding: 36px;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: lightboxFadeIn 0.24s ease forwards;
+}
+
+.highlight-lightbox-content {
+  max-width: min(100%, 980px);
+  max-height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 18px;
+  animation: lightboxImageIn 0.32s ease forwards;
+}
+
+.highlight-lightbox-image {
+  max-width: 100%;
+  max-height: calc(100vh - 100px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.highlight-lightbox-caption {
+  color: #fff;
+  text-align: left;
+}
+
+.highlight-lightbox-name,
+.highlight-lightbox-credit {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0;
+}
+
+.highlight-lightbox-name {
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.highlight-lightbox-credit {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.highlight-lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.highlight-lightbox-close:hover {
+  opacity: 1;
+}
+
+.lightbox-icon {
+  width: 28px;
+  height: 28px;
+  filter: invert(1);
+  display: block;
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+  z-index: 1;
+}
+
+.lightbox-nav:hover {
+  opacity: 1;
+}
+
+.lightbox-nav-prev {
+  left: 16px;
+}
+
+.lightbox-nav-next {
+  right: 16px;
+}
+
+.lightbox-nav .lightbox-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.highlight-lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  width: 48px;
+  height: 72px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.24);
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 300;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.highlight-lightbox-arrow:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.72);
+}
+
+.highlight-lightbox-arrow-left {
+  left: 28px;
+}
+
+.highlight-lightbox-arrow-right {
+  right: 28px;
+}
+
+@keyframes lightboxFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lightboxImageIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.talent-categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.talent-card {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+  aspect-ratio: 16 / 7;
+  min-height: 220px;
+}
+
+
+.talent-card:hover .talent-image {
+  transform: scale(1.03);
+}
+
+.talent-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.talent-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 60px 28px 28px;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.talent-division {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+
+.talent-name {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* ─── Featured ──────────────────────────────────── */
+.featured-section {
+  max-width: 1400px;
+  margin: 60px auto 0;
+  padding: 0 40px;
+}
+
+.featured-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.featured-card {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 16 / 7;
+}
+
+.featured-card:hover .featured-image {
+  transform: scale(1.03);
+}
+
+.featured-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.featured-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 80px 40px 40px;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.featured-division {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+
+.featured-name {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* ─── Get Scouted ───────────────────────────────── */
+.club-membership-section {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 400px;
+  overflow: hidden;
+  margin-top: 60px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.club-membership-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  filter: grayscale(1);
+  display: block;
+}
+
+.club-membership-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.62) 0%, transparent 62%);
+}
+
+.club-membership-content {
+  position: relative;
+  z-index: 2;
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.club-membership-eyebrow {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin: 0;
+}
+
+.club-membership-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+  line-height: 1;
+}
+
+.club-membership-quote {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.76);
+  margin: -4px 0 0;
+}
+
+.club-membership-link {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #5B006B;
+  padding: 12px 28px;
+  width: fit-content;
+  align-self: flex-start;
+  transition: background 0.2s ease;
+}
+
+.club-membership-link:hover {
+  background: #3d0049;
+}
+
+.club-membership-link:hover .arrow {
+  transform: translateX(4px);
+}
+
+.get-scouted-section {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 400px;
+  overflow: hidden;
+  margin-top: 0;
+  display: flex;
+  align-items: flex-end;
+}
+
+.get-scouted-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.get-scouted-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
+}
+
+.get-scouted-content {
+  position: relative;
+  z-index: 2;
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.get-scouted-eyebrow {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin: 0;
+}
+
+.get-scouted-title {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--fs-lg);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+  line-height: 1;
+}
+
+.get-scouted-link {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #5B006B;
+  padding: 12px 28px;
+  width: fit-content;
+  align-self: flex-start;
+  transition: background 0.2s ease;
+}
+
+.get-scouted-link:hover {
+  background: #3d0049;
+}
+
+.arrow {
+  transition: transform 0.2s ease;
+}
+
+.get-scouted-link:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* ─── Responsive ────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero-section {
+    height: calc(100vh - 60px);
+  }
+
+  .hero-caption {
+    left: 20px;
+    bottom: 28px;
+  }
+
+  .highlights-section,
+  .roster-section,
+  .featured-section {
+    margin-top: 32px;
+    padding: 0 20px;
+  }
+
+  .highlights-gallery {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .highlights-stack {
+    grid-template-rows: auto auto;
+    gap: 12px;
+  }
+
+  .highlights-stack-top {
+    gap: 12px;
+  }
+
+  .highlight-image-frame,
+  .highlight-image-frame-large,
+  .highlight-image-frame-wide,
+  .highlight-image-frame-short-wide {
+    height: 220px;
+    min-height: 220px;
+  }
+
+  .highlight-lightbox {
+    padding: 20px;
+  }
+
+  .highlight-lightbox-content {
+    gap: 14px;
+  }
+
+  .highlight-lightbox-image {
+    max-height: calc(100vh - 130px);
+  }
+
+  .highlight-lightbox-arrow {
+    width: 40px;
+    height: 56px;
+    font-size: 48px;
+  }
+
+  .highlight-lightbox-arrow-left {
+    left: 8px;
+  }
+
+  .highlight-lightbox-arrow-right {
+    right: 8px;
+  }
+
+  .talent-categories {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .talent-card {
+    aspect-ratio: 16 / 9;
+    min-height: 180px;
+  }
+
+  .featured-card {
+    width: 100%;
+  }
+
+  .club-membership-section {
+    margin-top: 40px;
+    height: 50vh;
+  }
+
+  .get-scouted-section {
+    margin-top: 0;
+    height: 50vh;
+  }
+
+  .club-membership-content {
+    padding: 32px 20px;
+  }
+
+  .club-membership-title {
+    font-size: 20px;
+  }
+
+  .get-scouted-content {
+    padding: 32px 20px;
+  }
+
+}
+
+

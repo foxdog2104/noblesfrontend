@@ -1,0 +1,366 @@
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  serverTimestamp,
+  setDoc,
+} from 'firebase/firestore';
+import { models } from '../data/models';
+import { auth, db } from '../firebase';
+import renePhoto from '../assets/images/Rene.png';
+import charlottePhoto from '../assets/images/models/Charlotte/imgi_1_4.jpg';
+import localTalentPhoto from '../assets/images/local-talent.png';
+
+const ADMIN_MODELS_KEY = 'noblesAdminModels';
+const MODELS_COLLECTION = 'adminModels';
+
+const demoAdminModels = [
+  {
+    slug: 'admin-demo-ava',
+    name: 'Ava Demo',
+    division: 'international',
+    location: 'Canada',
+    basedIn: 'Calgary',
+    agency: 'The Nobles Management',
+    coverImage: charlottePhoto,
+    portfolio: [charlottePhoto],
+    stats: {
+      height: "5'10\"",
+      bust: '32"',
+      waist: '24"',
+      hips: '35"',
+      shoeSize: '39',
+      hairColor: 'Blonde',
+      eyeColor: 'Hazel',
+    },
+    bio: null,
+    instagramHandle: null,
+    runwayShows: [],
+    featured: false,
+    showOnModelsPage: true,
+  },
+  {
+    slug: 'admin-demo-mila',
+    name: 'Mila Demo',
+    division: 'local',
+    location: 'Canada',
+    basedIn: 'Calgary',
+    agency: 'The Nobles Management',
+    coverImage: localTalentPhoto,
+    portfolio: [localTalentPhoto],
+    stats: {
+      height: "5'8\"",
+      bust: '33"',
+      waist: '25"',
+      hips: '36"',
+      shoeSize: '38',
+      hairColor: 'Brown',
+      eyeColor: 'Brown',
+    },
+    bio: null,
+    instagramHandle: null,
+    runwayShows: [],
+    featured: false,
+    showOnModelsPage: true,
+  },
+  {
+    slug: 'admin-demo-noah',
+    name: 'Noah Demo',
+    division: 'junior',
+    location: 'Canada',
+    basedIn: 'Calgary',
+    agency: 'The Nobles Management',
+    coverImage: renePhoto,
+    portfolio: [renePhoto],
+    stats: {
+      height: "5'7\"",
+      bust: '31"',
+      waist: '24"',
+      hips: '34"',
+      shoeSize: '37',
+      hairColor: 'Black',
+      eyeColor: 'Brown',
+    },
+    bio: null,
+    instagramHandle: null,
+    runwayShows: [],
+    featured: false,
+    showOnModelsPage: true,
+  },
+  {
+    slug: 'admin-demo-sienna',
+    name: 'Sienna Demo',
+    division: 'international',
+    location: 'Canada',
+    basedIn: 'Vancouver',
+    agency: 'The Nobles Management',
+    coverImage: renePhoto,
+    portfolio: [renePhoto],
+    stats: {
+      height: "5'9\"",
+      bust: '32"',
+      waist: '24"',
+      hips: '35"',
+      shoeSize: '39',
+      hairColor: 'Black',
+      eyeColor: 'Brown',
+    },
+    bio: null,
+    instagramHandle: null,
+    runwayShows: [],
+    featured: false,
+    showOnModelsPage: true,
+  },
+  {
+    slug: 'admin-demo-lena',
+    name: 'Lena Demo',
+    division: 'local',
+    location: 'Canada',
+    basedIn: 'Edmonton',
+    agency: 'The Nobles Management',
+    coverImage: charlottePhoto,
+    portfolio: [charlottePhoto],
+    stats: {
+      height: "5'6\"",
+      bust: '33"',
+      waist: '25"',
+      hips: '36"',
+      shoeSize: '38',
+      hairColor: 'Blonde',
+      eyeColor: 'Blue',
+    },
+    bio: null,
+    instagramHandle: null,
+    runwayShows: [],
+    featured: false,
+    showOnModelsPage: true,
+  },
+  {
+    slug: 'admin-demo-eli',
+    name: 'Eli Demo',
+    division: 'junior',
+    location: 'Canada',
+    basedIn: 'Calgary',
+    agency: 'The Nobles Management',
+    coverImage: localTalentPhoto,
+    portfolio: [localTalentPhoto],
+    stats: {
+      height: "5'8\"",
+      bust: '32"',
+      waist: '25"',
+      hips: '35"',
+      shoeSize: '40',
+      hairColor: 'Brown',
+      eyeColor: 'Hazel',
+    },
+    bio: null,
+    instagramHandle: null,
+    runwayShows: [],
+    featured: false,
+    showOnModelsPage: true,
+  },
+];
+
+const normalizeAdminModels = (adminModels) => (
+  adminModels.map((model) => ({
+    ...model,
+    showOnModelsPage: model.showOnModelsPage !== false,
+  }))
+);
+
+const getStoredModels = () => {
+  try {
+    const savedModels = JSON.parse(
+      localStorage.getItem(ADMIN_MODELS_KEY) || 'null'
+    );
+
+    if (!Array.isArray(savedModels)) {
+      return demoAdminModels;
+    }
+
+    return normalizeAdminModels(savedModels);
+  } catch (error) {
+    console.warn('Could not read stored admin models:', error);
+    return demoAdminModels;
+  }
+};
+
+const saveStoredModels = (nextModels) => {
+  localStorage.setItem(
+    ADMIN_MODELS_KEY,
+    JSON.stringify(nextModels)
+  );
+};
+
+const cleanRecord = (record) => {
+  const cleaned = JSON.parse(JSON.stringify(record));
+
+  Object.keys(cleaned).forEach((key) => {
+    if (cleaned[key] === undefined) {
+      delete cleaned[key];
+    }
+  });
+
+  return cleaned;
+};
+
+const getFirestoreModels = async () => {
+  const snap = await getDocs(
+    collection(db, MODELS_COLLECTION)
+  );
+
+  return normalizeAdminModels(
+    snap.docs
+      .map((modelDoc) => {
+        const data = modelDoc.data();
+        const { updatedAt, updatedBy, ...model } = data;
+
+        return {
+          ...model,
+          slug: data.slug || modelDoc.id,
+          order: data.order ?? 0,
+        };
+      })
+      .sort(
+        (firstModel, secondModel) =>
+          firstModel.order - secondModel.order
+      )
+  );
+};
+
+const saveFirestoreModels = async (nextModels) => {
+  if (!auth.currentUser) {
+    throw new Error(
+      'You must be logged in with Firebase before saving models.'
+    );
+  }
+
+  const collectionRef = collection(
+    db,
+    MODELS_COLLECTION
+  );
+
+  const existingSnap = await getDocs(collectionRef);
+
+  const nextSlugs = new Set(
+    nextModels.map((model) => model.slug)
+  );
+
+  const recordsToDelete = existingSnap.docs.filter(
+    (modelDoc) => !nextSlugs.has(modelDoc.id)
+  );
+
+  await Promise.all(
+    recordsToDelete.map((modelDoc) =>
+      deleteDoc(
+        doc(db, MODELS_COLLECTION, modelDoc.id)
+      )
+    )
+  );
+
+  await Promise.all(
+    nextModels.map((model, index) => {
+      if (!model.slug) {
+        throw new Error('Every model must have a slug.');
+      }
+
+      return setDoc(
+        doc(db, MODELS_COLLECTION, model.slug),
+        {
+          ...cleanRecord(model),
+          slug: model.slug,
+          order: index,
+          updatedAt: serverTimestamp(),
+          updatedBy: auth.currentUser.email || 'unknown',
+        }
+      );
+    })
+  );
+};
+
+export const saveAdminModels = async (nextModels) => {
+  if (!Array.isArray(nextModels)) {
+    throw new Error('Models must be an array.');
+  }
+
+  try {
+    await saveFirestoreModels(nextModels);
+  } catch (error) {
+    console.error('Firebase model save failed:', error);
+
+    window.alert(
+      `Firebase model save failed: ${error.message}`
+    );
+
+    throw error;
+  }
+
+  saveStoredModels(nextModels);
+
+  window.dispatchEvent(
+    new Event('nobles-admin-content-change')
+  );
+};
+
+export const getModels = async () => {
+  try {
+    const firestoreModels = await getFirestoreModels();
+    return [
+      ...models,
+      ...firestoreModels.filter(
+        (model) => model.showOnModelsPage !== false
+      ),
+    ];
+  } catch (error) {
+    console.warn(
+      'Firebase models unavailable, using local models:',
+      error
+    );
+    console.log('something went wrong')
+    return [
+      ...models,
+      ...getStoredModels().filter(
+        (model) => model.showOnModelsPage !== false
+      ),
+    ];
+  }
+};
+
+export const getModelsByDivision = async (division) => {
+  const allModels = await getModels();
+
+  return allModels.filter(
+    (model) =>
+      model.division === division.toLowerCase()
+  );
+};
+
+export const getModelBySlug = async (slug) => {
+  const allModels = await getModels();
+
+  return (
+    allModels.find(
+      (model) => model.slug === slug
+    ) ?? null
+  );
+};
+
+export const getAdminModels = async () => {
+  try {
+    const firestoreModels = await getFirestoreModels();
+
+    if (firestoreModels.length > 0) {
+      return firestoreModels;
+    }
+
+    return getStoredModels();
+  } catch (error) {
+    console.warn(
+      'Firebase admin models unavailable:',
+      error
+    );
+
+    return getStoredModels();
+  }
+};

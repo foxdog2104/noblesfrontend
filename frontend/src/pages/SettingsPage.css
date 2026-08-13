@@ -1,0 +1,83 @@
+.settings-page {
+  background-color: var(--theme-bg);
+  box-sizing: border-box;
+  color: var(--theme-text);
+  min-height: calc(100vh - 80px);
+  padding: 96px 40px 80px;
+}
+
+.settings-shell {
+  margin: 0 auto;
+  max-width: 760px;
+}
+
+.settings-eyebrow {
+  color: var(--theme-text-muted);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  margin: 0 0 14px;
+  text-transform: uppercase;
+}
+
+.settings-shell h1 {
+  color: var(--theme-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  margin: 0 0 42px;
+  text-transform: uppercase;
+}
+
+.settings-list {
+  border-top: 1px solid var(--theme-border-soft);
+}
+
+.settings-row {
+  align-items: center;
+  border-bottom: 1px solid var(--theme-border-soft);
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  padding: 22px 0;
+}
+
+.settings-row span,
+.settings-row strong {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+}
+
+.settings-row span {
+  color: var(--theme-text-muted);
+  text-transform: uppercase;
+}
+
+.settings-row strong {
+  color: var(--theme-text);
+  font-weight: 700;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .settings-page {
+    min-height: calc(100vh - 56px);
+    padding: 72px 20px 56px;
+  }
+
+  .settings-shell h1 {
+    font-size: 40px;
+  }
+
+  .settings-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .settings-row strong {
+    text-align: left;
+  }
+}

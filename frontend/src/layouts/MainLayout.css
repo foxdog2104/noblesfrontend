@@ -1,0 +1,22 @@
+.navbar-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.main-content {
+  background: var(--theme-bg);
+  padding-top: 80px;
+}
+
+html.is-mobile .navbar-wrapper {
+  top: auto;
+  bottom: 0;
+}
+
+html.is-mobile .main-content {
+  padding-top: 0;
+  padding-bottom: 60px;
+}

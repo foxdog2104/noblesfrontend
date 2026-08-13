@@ -1,0 +1,268 @@
+.admin-model-images-page {
+  background: var(--theme-bg);
+  box-sizing: border-box;
+  color: var(--theme-text);
+  min-height: calc(100vh - 64px);
+  padding: 96px 40px 80px;
+  position: relative;
+}
+
+.admin-model-images-centered {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-model-images-back {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  height: 38px;
+  justify-content: center;
+  left: 34px;
+  opacity: 0.82;
+  padding: 0;
+  position: absolute;
+  text-decoration: none;
+  top: 86px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  width: 38px;
+}
+
+.admin-model-images-back:hover {
+  opacity: 1;
+  transform: translateX(-4px);
+}
+
+.admin-model-images-back img {
+  display: block;
+  filter: var(--theme-icon-filter, none);
+  height: 24px;
+  width: 24px;
+}
+
+.admin-model-images-header,
+.admin-model-images-empty {
+  margin: 0 auto 34px;
+  max-width: 920px;
+  text-align: center;
+}
+
+.admin-model-images-header p,
+.admin-model-images-empty p {
+  color: var(--theme-text-muted);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  margin: 0 0 14px;
+  text-transform: uppercase;
+}
+
+.admin-model-images-header h1,
+.admin-model-images-empty h1 {
+  color: var(--theme-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  margin: 0 0 18px;
+  text-transform: uppercase;
+}
+
+.admin-model-images-header span {
+  color: var(--theme-text-muted);
+  display: block;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.admin-model-images-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 auto;
+  max-width: 1180px;
+  perspective: 1000px;
+}
+
+.admin-model-image-card {
+  background: var(--theme-surface-muted, #f4f4f4);
+  border-bottom: 1px solid var(--theme-border-soft);
+  cursor: grab;
+  overflow: hidden;
+  position: relative;
+  transform: translateY(0) scale(1);
+  transition: box-shadow 0.22s ease, opacity 0.22s ease, transform 0.22s ease, outline-color 0.22s ease;
+}
+
+.admin-model-image-card::before {
+  border: 1px solid transparent;
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: border-color 0.22s ease, background 0.22s ease;
+  z-index: 2;
+}
+
+.admin-model-image-card:active {
+  cursor: grabbing;
+}
+
+.admin-model-image-card:hover {
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
+  transform: translateY(-3px) scale(1.01);
+}
+
+.admin-model-image-card-dragging {
+  box-shadow: 0 22px 46px rgba(0, 0, 0, 0.26);
+  cursor: grabbing;
+  opacity: 0.46;
+  transform: rotate(1.5deg) translateY(-10px) scale(1.04);
+  z-index: 4;
+}
+
+.admin-model-image-card-drop-target {
+  box-shadow: 0 0 0 2px var(--theme-text), 0 18px 40px rgba(0, 0, 0, 0.18);
+  transform: translateY(-5px) scale(1.035);
+}
+
+.admin-model-image-card-drop-target::before {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--theme-text);
+}
+
+
+
+.admin-model-image-card-locked {
+  cursor: default;
+}
+
+.admin-model-image-card-locked:active {
+  cursor: default;
+}
+
+.admin-model-image-card img {
+  aspect-ratio: 4 / 5;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.22s ease, filter 0.22s ease;
+  width: 100%;
+}
+
+.admin-model-image-card-dragging img {
+  filter: saturate(0.7);
+  transform: scale(1.03);
+}
+
+.admin-model-image-card-actions,
+
+
+.admin-model-images-actions {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+}
+
+.admin-model-image-card-actions button,
+.admin-model-images-actions button {
+  background: transparent;
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text);
+  cursor: pointer;
+  flex: 1;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 12px 14px;
+  text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.admin-model-image-card-actions button:hover,
+.admin-model-images-actions button:hover {
+  background: var(--theme-text);
+  color: var(--theme-bg);
+}
+
+
+.admin-model-image-card-actions button {
+  background: var(--theme-bg);
+  border: 0;
+}
+
+.admin-model-image-card-actions button:hover {
+  background: #fff;
+  color: #000;
+}
+.admin-model-images-actions {
+  justify-content: center;
+  margin: 28px auto 0;
+  max-width: 320px;
+  padding: 0;
+}
+
+.admin-model-images-none {
+  color: var(--theme-text-muted);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  grid-column: 1 / -1;
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+
+.admin-model-image-lightbox {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.84);
+  border: 0;
+  cursor: zoom-out;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 42px;
+  position: fixed;
+  z-index: 60;
+}
+
+.admin-model-image-lightbox img {
+  max-height: 88vh;
+  max-width: min(820px, 92vw);
+  object-fit: contain;
+}
+@media (max-width: 900px) {
+  .admin-model-images-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-model-images-page {
+    min-height: calc(100vh - 56px);
+    padding: 72px 20px 96px;
+  }
+
+  .admin-model-images-back {
+    left: 16px;
+    top: 70px;
+  }
+
+  .admin-model-images-header h1,
+  .admin-model-images-empty h1 {
+    font-size: 38px;
+  }
+
+  .admin-model-images-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+

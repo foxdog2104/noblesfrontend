@@ -1,0 +1,179 @@
+.admin-account-page {
+  background: var(--theme-bg);
+  box-sizing: border-box;
+  color: var(--theme-text);
+  min-height: calc(100vh - 64px);
+  padding: 96px 40px 80px;
+}
+
+.admin-account-centered {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-account-header,
+.admin-account-access {
+  margin: 0 auto 34px;
+  max-width: 1120px;
+  text-align: center;
+}
+
+.admin-account-header p,
+.admin-account-access p,
+.admin-account-summary p,
+.admin-account-field span {
+  color: var(--theme-text-muted);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.admin-account-title-row {
+  align-items: center;
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  margin: 14px 0 18px;
+}
+
+.admin-account-title-row h1 {
+  margin: 0;
+}
+
+.admin-account-back {
+  align-items: center;
+  display: flex;
+  height: 34px;
+  justify-content: center;
+  opacity: 0.82;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  width: 34px;
+}
+
+.admin-account-back:hover {
+  opacity: 1;
+  transform: translateX(-4px);
+}
+
+.admin-account-back img {
+  display: block;
+  filter: var(--theme-icon-filter, none);
+  height: 22px;
+  width: 22px;
+}
+
+.admin-account-header h1,
+.admin-account-access h1 {
+  color: var(--theme-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.admin-account-header span,
+.admin-account-access span,
+.admin-account-access a,
+.admin-account-summary strong,
+.admin-account-message {
+  color: var(--theme-text-muted);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.admin-account-layout {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(220px, 320px) minmax(0, 760px);
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 1120px;
+}
+
+.admin-account-summary,
+.admin-account-form {
+  border-top: 1px solid var(--theme-border-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 24px;
+}
+
+.admin-account-summary strong {
+  color: var(--theme-text);
+  overflow-wrap: anywhere;
+}
+
+.admin-account-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-account-field input {
+  background: transparent;
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  outline: none;
+  padding: 12px;
+}
+
+.admin-account-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.admin-account-actions button {
+  background: transparent;
+  border: 1px solid var(--theme-border);
+  box-sizing: border-box;
+  color: var(--theme-text);
+  cursor: pointer;
+  flex: 1;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 14px 18px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.admin-account-actions button:hover {
+  background: var(--theme-text);
+  color: var(--theme-bg);
+}
+
+@media (max-width: 900px) {
+  .admin-account-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-account-page {
+    min-height: calc(100vh - 56px);
+    padding: 72px 20px 56px;
+  }
+
+  .admin-account-header h1,
+  .admin-account-access h1 {
+    font-size: 38px;
+  }
+
+  .admin-account-actions {
+    flex-direction: column;
+  }
+}
