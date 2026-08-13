@@ -33,8 +33,8 @@ async function openCheckoutPage() {
       },
     ],
     mode: 'payment',
-    success_url: 'https://white-cliff-0d1d7a20f.7.azurestaticapps.net/club-nobles/checkout/success',
-    cancel_url: 'https://white-cliff-0d1d7a20f.7.azurestaticapps.net/club-nobles',
+    success_url: 'https://white-cliff-0d1d7a20f.7.azurestaticapps.net',
+    cancel_url: 'https://white-cliff-0d1d7a20f.7.azurestaticapps.net',
   });
   window.location.replace(session.url);
 }
