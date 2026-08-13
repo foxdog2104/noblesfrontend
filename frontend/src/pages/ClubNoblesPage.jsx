@@ -31,8 +31,8 @@ async function openCheckoutPage() {
       },
     ],
     mode: 'payment',
-    success_url: 'http://localhost:3000/club-nobles/checkout/success',
-    cancel_url: 'http://localhost:3000/club-nobles',
+    success_url: 'http://white-cliff-0d1d7a20f.7.azurestaticapps.net/club-nobles/checkout/success',
+    cancel_url: 'http://white-cliff-0d1d7a20f.7.azurestaticapps.net/club-nobles',
   });
   window.location.replace(session.url);
 }
