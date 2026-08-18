@@ -21,6 +21,35 @@ const CHAR_LIMITS = {
 // 10 MB cap — prevents huge uploads from abusing our Azure storage quota
 const MAX_PHOTO_MB = 10;
 
+const ALLOWED_EMAIL_DOMAINS = new Set([
+  'gmail.com',
+  'googlemail.com',
+  'outlook.com',
+  'hotmail.com',
+  'live.com',
+  'msn.com',
+  'yahoo.com',
+  'yahoo.ca',
+  'icloud.com',
+  'me.com',
+  'mac.com',
+  'aol.com',
+  'proton.me',
+  'protonmail.com',
+  'mail.com',
+  'gmx.com',
+  'zoho.com',
+  'telus.net',
+  'shaw.ca',
+  'rogers.com',
+  'bell.net',
+]);
+
+const isAllowedEmailDomain = (email) => {
+  const domain = email.trim().toLowerCase().split('@').pop();
+  return ALLOWED_EMAIL_DOMAINS.has(domain);
+};
+
 // ─── Profanity + spam filter ──────────────────────────────────────────────────
 // Checked against name fields before anything is saved
 const BAD_WORDS = [
@@ -49,6 +78,7 @@ const validate = (formData, uploads) => {
 
   if (!formData.email.trim()) e.email = 'Required';
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) e.email = 'Invalid email';
+  else if (!isAllowedEmailDomain(formData.email)) e.email = 'Use a valid email.';
 
   if (!formData.phone.trim()) e.phone = 'Required';
   // Only digits, spaces, and common punctuation — rejects freeform text
@@ -590,5 +620,6 @@ const GetScoutedPage = () => {
 };
 
 export default GetScoutedPage;
+
 
 

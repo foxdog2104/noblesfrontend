@@ -60,6 +60,10 @@
   margin-bottom: 72px;
 }
 
+.profile-body-capcon {
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.8fr);
+}
+
 .profile-stats {
   display: flex;
   flex-direction: column;
@@ -142,6 +146,20 @@
   line-height: 1.7;
   color: #333;
   margin: 0;
+}
+
+.profile-quote {
+  align-self: center;
+  border-left: 1px solid #000;
+  color: #000;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: 0.03em;
+  line-height: 1.35;
+  margin: 0;
+  padding-left: 28px;
+  text-transform: uppercase;
 }
 
 /* ─── Section headers ────────────────────────────── */
@@ -265,6 +283,10 @@
     grid-template-columns: 160px 1fr;
   }
 
+  .profile-body-capcon {
+    grid-template-columns: 1fr;
+  }
+
   .profile-bio {
     grid-column: 1 / -1;
   }
@@ -281,6 +303,11 @@
 
   .profile-body {
     grid-template-columns: 1fr;
+  }
+
+  .profile-quote {
+    font-size: 20px;
+    padding-left: 18px;
   }
 
   .profile-portfolio-grid {

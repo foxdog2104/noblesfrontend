@@ -63,6 +63,7 @@ const NavBar = () => {
           <Link to={ROUTES.INTERNATIONAL} className="nav-link">International</Link>
           <Link to={ROUTES.LOCAL} className="nav-link">Local</Link>
           <Link to={ROUTES.JUNIOR} className="nav-link">Junior</Link>
+          <Link to={ROUTES.CAPCON} className="nav-link">CapCon</Link>
           <Link to={ROUTES.CONTACT} className="nav-link">Contact</Link>
         </div>
 
@@ -132,6 +133,13 @@ const NavBar = () => {
             <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
           </svg>
           <span>Junior</span>
+        </Link>
+        <Link to={ROUTES.CAPCON} className={`mobile-tab${path === ROUTES.CAPCON ? ' mobile-tab--active' : ''}`}>
+          <svg className="mobile-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M4 7h16M6 7l1.5 13h9L18 7M9 7V5a3 3 0 016 0v2" />
+            <path d="M9.5 12h5" />
+          </svg>
+          <span>CapCon</span>
         </Link>
         <Link to={ROUTES.GET_SCOUTED} className={`mobile-tab${path === ROUTES.GET_SCOUTED ? ' mobile-tab--active' : ''}`}>
           <svg className="mobile-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">

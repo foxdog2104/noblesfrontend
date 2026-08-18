@@ -35,6 +35,35 @@ const BLOCKED_CONTACT_WORDS = [
   'threat',
 ];
 
+const ALLOWED_EMAIL_DOMAINS = new Set([
+  'gmail.com',
+  'googlemail.com',
+  'outlook.com',
+  'hotmail.com',
+  'live.com',
+  'msn.com',
+  'yahoo.com',
+  'yahoo.ca',
+  'icloud.com',
+  'me.com',
+  'mac.com',
+  'aol.com',
+  'proton.me',
+  'protonmail.com',
+  'mail.com',
+  'gmx.com',
+  'zoho.com',
+  'telus.net',
+  'shaw.ca',
+  'rogers.com',
+  'bell.net',
+]);
+
+const isAllowedEmailDomain = (email) => {
+  const domain = email.trim().toLowerCase().split('@').pop();
+  return ALLOWED_EMAIL_DOMAINS.has(domain);
+};
+
 const normalizeContactText = (text) => {
   const leetMap = {
     '0': 'o',
@@ -78,6 +107,7 @@ const ContactPage = () => {
   const [recaptchaToken, setRecaptchaToken] = useState('');
   const [captchaError, setCaptchaError] = useState('');
   const [contentError, setContentError] = useState('');
+  const [emailError, setEmailError] = useState('');
   const recaptchaRef = useRef(null);
   const widgetIdRef = useRef(null);
 
@@ -134,6 +164,7 @@ const ContactPage = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     const nextValue = name === 'name' ? value.replace(/[0-9]/g, '') : value;
+    if (name === 'email') setEmailError('');
     setFormData((prev) => ({ ...prev, [name]: nextValue }));
   };
 
@@ -141,11 +172,18 @@ const ContactPage = () => {
     e.preventDefault();
     setCaptchaError('');
     setContentError('');
+    setEmailError('');
 
     if (hasBlockedLanguage(formData)) {
       setContentError('Please remove inappropriate language before sending your message.');
       setSubmitStatus('error');
       resetRecaptcha();
+      return;
+    }
+
+    if (!isAllowedEmailDomain(formData.email)) {
+      setEmailError('Use a valid email.');
+      setSubmitStatus('error');
       return;
     }
 
@@ -213,7 +251,7 @@ const ContactPage = () => {
 
               <div className="contact-detail">
                 <span className="contact-detail-label">Communication & General Inquiries</span>
-                <span className="contact-detail-name">René</span>
+                <span className="contact-detail-name">Renï¿½</span>
                 <a href="mailto:communication@thenoblesmgmt.com" className="contact-detail-link">
                   communication@thenoblesmgmt.com
                 </a>
@@ -259,6 +297,7 @@ const ContactPage = () => {
                   onChange={handleChange}
                   required
                 />
+                {emailError && <small className="contact-captcha-error">{emailError}</small>}
               </div>
 
               <div className="contact-form-field">
@@ -343,6 +382,8 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
+
+
 
 
 
