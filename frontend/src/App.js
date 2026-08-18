@@ -48,6 +48,10 @@ function App() {
             element={<ModelsPage category="Junior" />}
           />
           <Route
+            path={ROUTES.CAPCON}
+            element={<ModelsPage category="CapCon" />}
+          />
+          <Route
             path={ROUTES.GET_SCOUTED}
             element={<GetScoutedPage />}
           />

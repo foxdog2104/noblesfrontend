@@ -4,6 +4,7 @@ export const ROUTES = {
   INTERNATIONAL: '/international',
   LOCAL: '/local',
   JUNIOR: '/junior',
+  CAPCON: '/capcon',
   GET_SCOUTED: '/get-scouted',
   CLUB_NOBLES: '/club-nobles',
   CLUB_NOBLES_CHECKOUT: '/club-nobles/checkout',

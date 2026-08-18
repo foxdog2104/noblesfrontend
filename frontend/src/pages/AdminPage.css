@@ -132,6 +132,12 @@
   padding: 12px;
 }
 
+.admin-form input:disabled {
+  color: var(--theme-text-muted);
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
 
 .admin-upload-field {
   display: flex;

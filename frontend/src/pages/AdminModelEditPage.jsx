@@ -25,6 +25,7 @@ const emptyForm = {
   shoeSize: '',
   hairColor: '',
   eyeColor: '',
+  quote: '',
   images: [],
   mainImageIndex: 0,
   photoFileName: '',
@@ -33,6 +34,19 @@ const emptyForm = {
   runwaySeason: '',
   showOnModelsPage: true,
 };
+
+const MODEL_DIVISIONS = [
+  { value: 'international', label: 'International' },
+  { value: 'local', label: 'Local' },
+  { value: 'junior', label: 'Junior' },
+  { value: 'capcon', label: 'CapCon' },
+];
+
+const applyCapConDefaults = (form) => (
+  form.division === 'capcon'
+    ? { ...form, location: 'Canada', basedIn: 'Calgary' }
+    : form
+);
 
 const splitModelName = (name = '') => {
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -71,7 +85,7 @@ const normalizeRunwayShow = (show) => {
   };
 };
 
-const normalizeModelForm = (form) => ({
+const normalizeModelForm = (form) => applyCapConDefaults({
   ...emptyForm,
   ...form,
   images: Array.isArray(form?.images) ? form.images : [],
@@ -79,6 +93,7 @@ const normalizeModelForm = (form) => ({
   runwayShows: Array.isArray(form?.runwayShows) ? form.runwayShows.map(normalizeRunwayShow) : [],
   runwayName: form?.runwayName || '',
   runwaySeason: form?.runwaySeason || '',
+  quote: form?.quote || '',
 });
 
 const modelToForm = (model) => {
@@ -98,6 +113,7 @@ const modelToForm = (model) => {
     shoeSize: model.stats?.shoeSize || '',
     hairColor: model.stats?.hairColor || '',
     eyeColor: model.stats?.eyeColor || '',
+    quote: model.quote || '',
     images,
     mainImageIndex: coverIndex,
     photoFileName: images.length ? `${images.length} current image${images.length === 1 ? '' : 's'}` : '',
@@ -110,16 +126,18 @@ const formToModel = (form, originalModel) => {
   const name = buildModelName(form);
   const mainImage = form.images[form.mainImageIndex] || form.images[0] || '';
   const portfolioImages = form.images.filter((src) => src && src !== mainImage);
+  const isCapCon = form.division === 'capcon';
   return {
     ...originalModel,
     name,
     division: form.division,
-    location: form.location,
-    basedIn: form.basedIn,
+    location: isCapCon ? 'Canada' : form.location,
+    basedIn: isCapCon ? 'Calgary' : form.basedIn,
     agency: originalModel.agency || 'The Nobles Management',
     coverImage: mainImage,
     portfolio: portfolioImages,
-    stats: {
+    quote: isCapCon ? form.quote : '',
+    stats: isCapCon ? {} : {
       height: form.height,
       bust: form.bust,
       waist: form.waist,
@@ -178,7 +196,10 @@ const AdminModelEditPage = () => {
 
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
-    setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    setForm((prev) => {
+      const next = { ...prev, [name]: type === 'checkbox' ? checked : value };
+      return applyCapConDefaults(next);
+    });
   };
 
   const handlePhotoChange = async (e) => {
@@ -316,6 +337,7 @@ const AdminModelEditPage = () => {
   const hasHiddenImages = form.images.length > 1;
   const visibleImages = hasHiddenImages ? [form.images[form.mainImageIndex] || form.images[0]] : form.images;
   const hiddenImageCount = Math.max(0, form.images.length - 1);
+  const isCapConForm = form.division === 'capcon';
 
   return (
     <MainLayout>
@@ -379,21 +401,25 @@ const AdminModelEditPage = () => {
               <label className="admin-field"><span>Last Name</span><input name="lastName" placeholder="Last name" value={form.lastName} onChange={handleChange} required /></label>
             </div>
             <label className="admin-field"><span>Division</span><select name="division" value={form.division} onChange={handleChange}>
-              <option value="international">International</option>
-              <option value="local">Local</option>
-              <option value="junior">Junior</option>
+              {MODEL_DIVISIONS.map((division) => (
+                <option value={division.value} key={division.value}>{division.label}</option>
+              ))}
             </select></label>
-            <label className="admin-field"><span>Location</span><input name="location" placeholder="Location" value={form.location} onChange={handleChange} /></label>
-            <label className="admin-field"><span>Based In</span><input name="basedIn" placeholder="Based in" value={form.basedIn} onChange={handleChange} /></label>
-            <div className="admin-form-grid">
-              <label className="admin-field"><span>Height</span><input name="height" placeholder="Height" value={form.height} onChange={handleChange} /></label>
-              <label className="admin-field"><span>Bust</span><input name="bust" placeholder="Bust" value={form.bust} onChange={handleChange} /></label>
-              <label className="admin-field"><span>Waist</span><input name="waist" placeholder="Waist" value={form.waist} onChange={handleChange} /></label>
-              <label className="admin-field"><span>Hips</span><input name="hips" placeholder="Hips" value={form.hips} onChange={handleChange} /></label>
-              <label className="admin-field"><span>Shoe</span><input name="shoeSize" placeholder="Shoe" value={form.shoeSize} onChange={handleChange} /></label>
-              <label className="admin-field"><span>Hair</span><input name="hairColor" placeholder="Hair" value={form.hairColor} onChange={handleChange} /></label>
-              <label className="admin-field"><span>Eyes</span><input name="eyeColor" placeholder="Eyes" value={form.eyeColor} onChange={handleChange} /></label>
-            </div>
+            <label className="admin-field"><span>Location</span><input name="location" placeholder="Location" value={form.location} onChange={handleChange} disabled={isCapConForm} /></label>
+            <label className="admin-field"><span>Based In</span><input name="basedIn" placeholder="Based in" value={form.basedIn} onChange={handleChange} disabled={isCapConForm} /></label>
+            {isCapConForm ? (
+              <label className="admin-field"><span>Quote</span><textarea name="quote" placeholder="Quote" value={form.quote} onChange={handleChange} /></label>
+            ) : (
+              <div className="admin-form-grid">
+                <label className="admin-field"><span>Height</span><input name="height" placeholder="Height" value={form.height} onChange={handleChange} /></label>
+                <label className="admin-field"><span>Bust</span><input name="bust" placeholder="Bust" value={form.bust} onChange={handleChange} /></label>
+                <label className="admin-field"><span>Waist</span><input name="waist" placeholder="Waist" value={form.waist} onChange={handleChange} /></label>
+                <label className="admin-field"><span>Hips</span><input name="hips" placeholder="Hips" value={form.hips} onChange={handleChange} /></label>
+                <label className="admin-field"><span>Shoe</span><input name="shoeSize" placeholder="Shoe" value={form.shoeSize} onChange={handleChange} /></label>
+                <label className="admin-field"><span>Hair</span><input name="hairColor" placeholder="Hair" value={form.hairColor} onChange={handleChange} /></label>
+                <label className="admin-field"><span>Eyes</span><input name="eyeColor" placeholder="Eyes" value={form.eyeColor} onChange={handleChange} /></label>
+              </div>
+            )}
 
             <section className="admin-runway-editor">
               <div className="admin-runway-header">Runway Shows</div>

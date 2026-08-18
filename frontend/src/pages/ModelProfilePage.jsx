@@ -42,6 +42,8 @@ const ModelProfilePage = () => {
   if (!model) return null;
 
   const portfolioImages = (model.portfolio || []).filter((src) => src && src !== model.coverImage);
+  const isCapCon = model.division === 'capcon';
+  const hasQuote = Boolean(model.quote?.trim());
 
   return (
     <MainLayout>
@@ -57,28 +59,30 @@ const ModelProfilePage = () => {
         <div className="profile-divider" />
 
         {/* Stats + Hero photo */}
-        <div className="profile-body">
-          <aside className="profile-stats">
-            {Object.entries(STAT_LABELS).map(([key, label]) =>
-              model.stats[key] ? (
+        <div className={`profile-body${isCapCon ? ' profile-body-capcon' : ''}`}>
+          {!isCapCon && (
+            <aside className="profile-stats">
+              {Object.entries(STAT_LABELS).map(([key, label]) =>
+                model.stats?.[key] ? (
                 <div key={key} className="profile-stat-row">
                   <span className="profile-stat-label">{label}</span>
                   <span className="profile-stat-value">{model.stats[key]}</span>
                 </div>
-              ) : null
-            )}
+                ) : null
+              )}
 
-            {model.instagramHandle && (
-              <a
-                href={`https://instagram.com/${model.instagramHandle.replace('@', '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="profile-instagram"
-              >
-                {model.instagramHandle}
-              </a>
-            )}
-          </aside>
+              {model.instagramHandle && (
+                <a
+                  href={`https://instagram.com/${model.instagramHandle.replace('@', '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="profile-instagram"
+                >
+                  {model.instagramHandle}
+                </a>
+              )}
+            </aside>
+          )}
 
           <div className="profile-hero-wrap">
             {model.coverImage && (
@@ -89,6 +93,12 @@ const ModelProfilePage = () => {
               />
             )}
           </div>
+
+          {isCapCon && hasQuote && (
+            <blockquote className="profile-quote">
+              "{model.quote}"
+            </blockquote>
+          )}
 
           {model.bio && (
             <div className="profile-bio">

@@ -36,10 +36,24 @@ const emptyModel = {
   shoeSize: '',
   hairColor: '',
   eyeColor: '',
+  quote: '',
   coverImage: '',
   photoFileName: '',
   showOnModelsPage: true,
 };
+
+const MODEL_DIVISIONS = [
+  { value: 'international', label: 'International' },
+  { value: 'local', label: 'Local' },
+  { value: 'junior', label: 'Junior' },
+  { value: 'capcon', label: 'CapCon' },
+];
+
+const applyCapConDefaults = (model) => (
+  model.division === 'capcon'
+    ? { ...model, location: 'Canada', basedIn: 'Calgary' }
+    : model
+);
 
 const demoContactSubmission = {
   id: 'demo-contact-message',
@@ -152,6 +166,7 @@ const AdminPage = () => {
     || account.lastName?.toLowerCase().includes(normalizedAccountSearch)
     || account.phoneNumber?.toLowerCase().includes(normalizedAccountSearch)
   ));
+  const isCapConModelForm = modelForm.division === 'capcon';
 
   useEffect(() => {
     if (TABS.some((tab) => tab.id === requestedTab) && requestedTab !== activeTab) {
@@ -234,7 +249,10 @@ const AdminPage = () => {
 
   const handleModelChange = (e) => {
     const { name, value, checked, type } = e.target;
-    setModelForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    setModelForm((prev) => {
+      const next = { ...prev, [name]: type === 'checkbox' ? checked : value };
+      return applyCapConDefaults(next);
+    });
   };
 
  const handleArticleCoverChange = async (e) => {
@@ -326,12 +344,13 @@ const AdminPage = () => {
       slug,
       name: modelName,
       division: modelForm.division,
-      location: modelForm.location,
-      basedIn: modelForm.basedIn,
+      location: isCapConModelForm ? 'Canada' : modelForm.location,
+      basedIn: isCapConModelForm ? 'Calgary' : modelForm.basedIn,
       agency: 'The Nobles Management',
       coverImage: modelForm.coverImage,
       portfolio: modelForm.coverImage ? [modelForm.coverImage] : [],
-      stats: {
+      quote: isCapConModelForm ? modelForm.quote : '',
+      stats: isCapConModelForm ? {} : {
         height: modelForm.height,
         bust: modelForm.bust,
         waist: modelForm.waist,
@@ -589,12 +608,12 @@ const AdminPage = () => {
                 <input name="lastName" placeholder="Last name" value={modelForm.lastName} onChange={handleModelChange} required />
               </div>
               <select name="division" value={modelForm.division} onChange={handleModelChange}>
-                <option value="international">International</option>
-                <option value="local">Local</option>
-                <option value="junior">Junior</option>
+                {MODEL_DIVISIONS.map((division) => (
+                  <option value={division.value} key={division.value}>{division.label}</option>
+                ))}
               </select>
-              <input name="location" placeholder="Location" value={modelForm.location} onChange={handleModelChange} />
-              <input name="basedIn" placeholder="Based in" value={modelForm.basedIn} onChange={handleModelChange} />
+              <input name="location" placeholder="Location" value={modelForm.location} onChange={handleModelChange} disabled={isCapConModelForm} />
+              <input name="basedIn" placeholder="Based in" value={modelForm.basedIn} onChange={handleModelChange} disabled={isCapConModelForm} />
               <div className="admin-upload-field">
                 <span className="admin-upload-title">Model Photo</span>
                 <label className="upload-label-btn">
@@ -604,15 +623,19 @@ const AdminPage = () => {
                 <span className="upload-filename">{modelForm.photoFileName || 'No file chosen'}</span>
               </div>
               {modelForm.coverImage && <img src={modelForm.coverImage} alt="Model preview" className="admin-image-preview" />}
-              <div className="admin-form-grid">
-                <input name="height" placeholder="Height" value={modelForm.height} onChange={handleModelChange} />
-                <input name="bust" placeholder="Bust" value={modelForm.bust} onChange={handleModelChange} />
-                <input name="waist" placeholder="Waist" value={modelForm.waist} onChange={handleModelChange} />
-                <input name="hips" placeholder="Hips" value={modelForm.hips} onChange={handleModelChange} />
-                <input name="shoeSize" placeholder="Shoe" value={modelForm.shoeSize} onChange={handleModelChange} />
-                <input name="hairColor" placeholder="Hair" value={modelForm.hairColor} onChange={handleModelChange} />
-                <input name="eyeColor" placeholder="Eyes" value={modelForm.eyeColor} onChange={handleModelChange} />
-              </div>
+              {isCapConModelForm ? (
+                <textarea name="quote" placeholder="Quote" value={modelForm.quote} onChange={handleModelChange} aria-label="Quote" />
+              ) : (
+                <div className="admin-form-grid">
+                  <input name="height" placeholder="Height" value={modelForm.height} onChange={handleModelChange} />
+                  <input name="bust" placeholder="Bust" value={modelForm.bust} onChange={handleModelChange} />
+                  <input name="waist" placeholder="Waist" value={modelForm.waist} onChange={handleModelChange} />
+                  <input name="hips" placeholder="Hips" value={modelForm.hips} onChange={handleModelChange} />
+                  <input name="shoeSize" placeholder="Shoe" value={modelForm.shoeSize} onChange={handleModelChange} />
+                  <input name="hairColor" placeholder="Hair" value={modelForm.hairColor} onChange={handleModelChange} />
+                  <input name="eyeColor" placeholder="Eyes" value={modelForm.eyeColor} onChange={handleModelChange} />
+                </div>
+              )}
               <label className="admin-toggle-row">
                 <input
                   type="checkbox"
@@ -637,14 +660,14 @@ const AdminPage = () => {
                 aria-label="Search admin models"
               />
               <div className="admin-model-category-tabs" aria-label="Filter models by division">
-                {['international', 'local', 'junior'].map((division) => (
+                {MODEL_DIVISIONS.map((division) => (
                   <button
                     type="button"
-                    className={adminModelDivisionFilter === division ? 'admin-model-category-tab admin-model-category-tab-active' : 'admin-model-category-tab'}
-                    onClick={() => setAdminModelDivisionFilter(division)}
-                    key={division}
+                    className={adminModelDivisionFilter === division.value ? 'admin-model-category-tab admin-model-category-tab-active' : 'admin-model-category-tab'}
+                    onClick={() => setAdminModelDivisionFilter(division.value)}
+                    key={division.value}
                   >
-                    {division === 'junior' ? 'Junior' : division.charAt(0).toUpperCase() + division.slice(1)}
+                    {division.label}
                   </button>
                 ))}
               </div>
