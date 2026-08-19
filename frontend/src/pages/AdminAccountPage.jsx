@@ -6,6 +6,7 @@ import MainLayout from '../layouts/MainLayout';
 import { auth, db } from '../firebase';
 import { ROUTES } from '../constants';
 import arrowLeft from '../assets/images/arrow-left.svg';
+import { getProfile } from '../services/profileService';
 import './AdminAccountPage.css';
 
 const ADMIN_EMAILS = ['televisionneverenough@gmail.com', 'test@nobles.com', 'noblesadmintest@gmail.com'];
@@ -43,6 +44,8 @@ const AdminAccountPage = () => {
   const [form, setForm] = useState(emptyForm);
   const [notFound, setNotFound] = useState(false);
   const [message, setMessage] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [avatarError, setAvatarError] = useState('');
   const isDemoAccount = accountId === demoAccount.id;
 
   useEffect(() => {
@@ -85,6 +88,13 @@ const AdminAccountPage = () => {
         email: accountData.email || '',
         phoneNumber: accountData.phoneNumber || '',
       });
+
+            try {
+        const profile = await getProfile(accountId);
+        setAvatarUrl(profile.avatarUrl);
+      } catch (error) {
+        setAvatarError('Could not load profile picture.');
+      }
     };
 
     loadAccount().catch((error) => setMessage(error.message));
@@ -186,6 +196,15 @@ const AdminAccountPage = () => {
 
         <section className="admin-account-layout">
           <aside className="admin-account-summary">
+             <div className="admin-account-avatar">
+              {avatarUrl ? (
+              <img src={avatarUrl} alt={`${form.firstName} ${form.lastName}`.trim() || 'Profile'} />
+              ) : (
+              <span className="admin-account-avatar-placeholder">No photo</span>
+          )}
+           </div>
+
+           {avatarError && <p className="admin-account-message">{avatarError}</p>}
             <p>Account ID</p>
             <strong>{account.id}</strong>
             <p>Created</p>
