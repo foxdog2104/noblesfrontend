@@ -33,7 +33,7 @@ const ChatWidget = () => {
     console.log('Api link')
     console.log(CHAT_API_URL)
     try {
-      const res = await fetch('https://nobleswebapp-fgb2dmh4evf6bzh8.eastus2-01.azurewebsites.net/api/v1/chat/messages', {
+      const res = await fetch('https://nobleschatbot-fuhxazcahrhrcucx.canadacentral-01.azurewebsites.net/api/v1/chat/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text }),
