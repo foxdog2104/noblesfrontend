@@ -20,6 +20,49 @@ const NAV = [
 const DISPLAY_NAME_MAX = 60;
 const BIO_MAX = 400;
 const MEASUREMENT_FIELD_MAX = 20;
+const CROP_PREVIEW_SIZE = 280;
+const CROP_OUTPUT_SIZE = 520;
+
+const loadImage = (src) =>
+  new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = src;
+  });
+
+const canvasToBlob = (canvas, type = 'image/jpeg', quality = 0.9) =>
+  new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) resolve(blob);
+      else reject(new Error('Could not crop image.'));
+    }, type, quality);
+  });
+
+const createCroppedAvatarFile = async ({ src, fileName, fileType, offset, zoom }) => {
+  const image = await loadImage(src);
+  const canvas = document.createElement('canvas');
+  canvas.width = CROP_OUTPUT_SIZE;
+  canvas.height = CROP_OUTPUT_SIZE;
+  const context = canvas.getContext('2d');
+  const baseScale = Math.max(CROP_OUTPUT_SIZE / image.naturalWidth, CROP_OUTPUT_SIZE / image.naturalHeight);
+  const scale = baseScale * zoom;
+  const drawWidth = image.naturalWidth * scale;
+  const drawHeight = image.naturalHeight * scale;
+  const offsetScale = CROP_OUTPUT_SIZE / CROP_PREVIEW_SIZE;
+  const drawX = (CROP_OUTPUT_SIZE - drawWidth) / 2 + offset.x * offsetScale;
+  const drawY = (CROP_OUTPUT_SIZE - drawHeight) / 2 + offset.y * offsetScale;
+
+  context.fillStyle = '#ffffff';
+  context.fillRect(0, 0, CROP_OUTPUT_SIZE, CROP_OUTPUT_SIZE);
+  context.drawImage(image, drawX, drawY, drawWidth, drawHeight);
+
+  const outputType = fileType === 'image/png' ? 'image/png' : 'image/jpeg';
+  const blob = await canvasToBlob(canvas, outputType, 0.86);
+  const extension = outputType === 'image/png' ? 'png' : 'jpg';
+  const cleanedName = fileName.replace(/\.[^.]+$/, '') || 'profile-picture';
+  return new File([blob], `${cleanedName}-cropped.${extension}`, { type: outputType });
+};
 
 function SignInPrompt({ title, copy }) {
   return (
@@ -46,6 +89,10 @@ function ProfileSection({ firebaseUser, authLoading }) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const fileInputRef = useRef(null);
+  const cropDragRef = useRef(null);
+  const [cropDraft, setCropDraft] = useState(null);
+  const [cropOffset, setCropOffset] = useState({ x: 0, y: 0 });
+  const [cropZoom, setCropZoom] = useState(1);
 
   useEffect(() => {
     if (!firebaseUser) {
@@ -78,16 +125,79 @@ function ProfileSection({ firebaseUser, authLoading }) {
     };
   }, [firebaseUser]);
 
-  const handleAvatarChange = async (e) => {
+  const handleAvatarChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (!['image/jpeg', 'image/png'].includes(file.type)) {
+      setError('Use a JPG or PNG image.');
+      e.target.value = '';
+      return;
+    }
+
+    setError('');
+    setSuccess('');
+    setCropOffset({ x: 0, y: 0 });
+    setCropZoom(1);
+    setCropDraft({
+      src: URL.createObjectURL(file),
+      fileName: file.name,
+      fileType: file.type,
+    });
+    e.target.value = '';
+  };
+
+  const closeCropDialog = () => {
+    if (cropDraft?.src) URL.revokeObjectURL(cropDraft.src);
+    setCropDraft(null);
+    setCropOffset({ x: 0, y: 0 });
+    setCropZoom(1);
+  };
+
+  const handleCropPointerDown = (e) => {
+    e.preventDefault();
+    cropDragRef.current = {
+      pointerId: e.pointerId,
+      startX: e.clientX,
+      startY: e.clientY,
+      offset: cropOffset,
+    };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const handleCropPointerMove = (e) => {
+    const drag = cropDragRef.current;
+    if (!drag || drag.pointerId !== e.pointerId) return;
+
+    setCropOffset({
+      x: drag.offset.x + e.clientX - drag.startX,
+      y: drag.offset.y + e.clientY - drag.startY,
+    });
+  };
+
+  const handleCropPointerEnd = (e) => {
+    const drag = cropDragRef.current;
+    if (!drag || drag.pointerId !== e.pointerId) return;
+    cropDragRef.current = null;
+    e.currentTarget.releasePointerCapture(e.pointerId);
+  };
+
+  const handleCropConfirm = async () => {
+    if (!cropDraft) return;
 
     setUploading(true);
     setError('');
     try {
-      const url = await uploadAvatar(firebaseUser.uid, file);
-      await saveProfile(firebaseUser.uid, { avatarUrl: url });
+      const croppedFile = await createCroppedAvatarFile({
+        ...cropDraft,
+        offset: cropOffset,
+        zoom: cropZoom,
+      });
+      const url = await uploadAvatar(firebaseUser.uid, croppedFile);
       setAvatarUrl(url);
+      setSaved((prev) => ({ ...prev, avatarUrl: url }));
+      setSuccess('Profile picture saved locally.');
+      closeCropDialog();
     } catch {
       setError('Could not upload that image. Try a smaller JPG or PNG.');
     } finally {
@@ -154,6 +264,61 @@ function ProfileSection({ firebaseUser, authLoading }) {
           <div className="settings-hint">JPG or PNG</div>
         </div>
       </div>
+
+      {cropDraft && (
+        <div className="settings-crop-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-crop-title">
+          <div className="settings-crop-dialog">
+            <div className="settings-crop-header">
+              <h2 id="settings-crop-title">Crop Profile Picture</h2>
+              <p>Drag the image and adjust the zoom.</p>
+            </div>
+
+            <div
+              className="settings-crop-frame"
+              onPointerDown={handleCropPointerDown}
+              onPointerMove={handleCropPointerMove}
+              onPointerUp={handleCropPointerEnd}
+              onPointerCancel={handleCropPointerEnd}
+            >
+              <img
+                src={cropDraft.src}
+                alt="Profile crop preview"
+                className="settings-crop-image"
+                draggable="false"
+                style={{
+                  transform: `translate(-50%, -50%) translate(${cropOffset.x}px, ${cropOffset.y}px) scale(${cropZoom})`,
+                }}
+              />
+            </div>
+
+            <label className="settings-crop-zoom">
+              <span>Zoom</span>
+              <input
+                type="range"
+                min="1"
+                max="2.5"
+                step="0.05"
+                value={cropZoom}
+                onChange={(e) => setCropZoom(Number(e.target.value))}
+              />
+            </label>
+
+            <div className="settings-crop-actions">
+              <button type="button" className="settings-button" onClick={handleCropConfirm} disabled={uploading}>
+                {uploading ? 'Uploading...' : 'OK'}
+              </button>
+              <button
+                type="button"
+                className="settings-button settings-button-outline"
+                onClick={closeCropDialog}
+                disabled={uploading}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="settings-list">
         <div className="settings-row">
@@ -638,9 +803,10 @@ const SettingsPage = () => {
     const unsubscribe = onAuthStateChanged(auth, (u) => {
       setFirebaseUser(u);
       setAuthLoading(false);
+      refreshMembership();
     });
     return unsubscribe;
-  }, []);
+  }, [refreshMembership]);
 
   const handleSignOut = async () => {
     await signOut(auth);

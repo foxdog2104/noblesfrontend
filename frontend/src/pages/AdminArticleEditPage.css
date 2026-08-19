@@ -97,6 +97,10 @@
   max-width: 1120px;
 }
 
+.admin-article-edit-layout-no-cover {
+  grid-template-columns: minmax(0, 760px);
+}
+
 .admin-article-cover-panel,
 .admin-article-edit-form {
   border-top: 1px solid var(--theme-border-soft);
@@ -120,15 +124,26 @@
 }
 
 .admin-article-field input,
+.admin-article-field select,
 .admin-article-field textarea {
   color-scheme: var(--theme-color-scheme, light);
-  background: transparent;
+  background: var(--theme-bg);
   border: 1px solid var(--theme-border);
   color: var(--theme-text);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 12px;
   outline: none;
   padding: 12px;
+}
+
+.admin-article-field select option {
+  background: var(--theme-surface);
+  color: var(--theme-text);
+}
+
+.admin-article-field select option:checked {
+  background: var(--theme-button-bg);
+  color: var(--theme-button-text);
 }
 
 .admin-article-field textarea {

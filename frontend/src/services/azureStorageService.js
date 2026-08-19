@@ -1,3 +1,5 @@
+import { compressImageFile } from '../utils/imageCompression';
+
 const account = process.env.REACT_APP_AZURE_STORAGE_ACCOUNT;
 const sasToken = process.env.REACT_APP_AZURE_SAS_TOKEN;
 const containerName =
@@ -10,7 +12,8 @@ export const uploadToAzureBlob = async (file, folder) => {
     throw new Error('Azure Storage configuration is missing.');
   }
 
-  const blobName = `${folder}/${Date.now()}-${encodeURIComponent(file.name)}`;
+  const compressedFile = await compressImageFile(file);
+  const blobName = `${folder}/${Date.now()}-${encodeURIComponent(compressedFile.name)}`;
 
   const url =
     `https://${account}.blob.core.windows.net/` +
@@ -20,9 +23,9 @@ export const uploadToAzureBlob = async (file, folder) => {
     method: 'PUT',
     headers: {
       'x-ms-blob-type': 'BlockBlob',
-      'Content-Type': file.type || 'application/octet-stream',
+      'Content-Type': compressedFile.type || 'application/octet-stream',
     },
-    body: file,
+    body: compressedFile,
   });
 
   if (!response.ok) {

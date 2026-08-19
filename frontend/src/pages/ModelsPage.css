@@ -7,6 +7,7 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+  gap: 24px;
   padding: 40px 40px 24px;
   max-width: 1600px;
   margin: 0 auto;
@@ -18,9 +19,16 @@
   font-weight: 700;
   letter-spacing: -0.02em;
   text-transform: uppercase;
-  color: #000;
+  color: var(--theme-text);
   margin: 0;
   line-height: 1;
+}
+
+.models-controls {
+  align-items: end;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 140px repeat(4, 120px) auto;
 }
 
 .models-search {
@@ -28,21 +36,56 @@
   font-size: 10px;
   font-weight: 400;
   letter-spacing: 0;
-  color: #000;
+  color: var(--theme-text);
   border: none;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--theme-border-soft);
   outline: none;
   padding: 4px 0;
   width: 140px;
   background: transparent;
 }
 
-.models-search::placeholder {
-  color: #bbb;
+.models-filter {
+  background: var(--theme-bg);
+  border: none;
+  border-bottom: 1px solid var(--theme-border-soft);
+  border-radius: 0;
+  color: var(--theme-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0;
+  outline: none;
+  padding: 4px 18px 4px 0;
+  text-transform: uppercase;
 }
 
-.models-search:focus {
-  border-bottom-color: #000;
+.models-clear-filter {
+  background: transparent;
+  border: 1px solid var(--theme-border-soft);
+  color: var(--theme-text);
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  min-height: 30px;
+  padding: 7px 12px;
+  text-transform: uppercase;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.models-clear-filter:hover {
+  background: var(--theme-button-bg);
+  color: var(--theme-button-text);
+}
+
+.models-search::placeholder {
+  color: var(--theme-text-soft);
+}
+
+.models-search:focus,
+.models-filter:focus {
+  border-bottom-color: var(--theme-border);
 }
 
 /* ─── Grid ───────────────────────────────────────── */
@@ -56,7 +99,7 @@
 .models-empty {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 10px;
-  color: #bbb;
+  color: var(--theme-text-muted);
   grid-column: 1 / -1;
   padding: 60px 40px;
 }
@@ -75,6 +118,9 @@
   }
 
   .models-header {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 18px;
     padding: 20px 16px 14px;
   }
 
@@ -86,8 +132,16 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .models-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .models-search {
-    width: 90px;
+    width: 100%;
+  }
+
+  .models-clear-filter {
+    grid-column: 1 / -1;
   }
 }
 

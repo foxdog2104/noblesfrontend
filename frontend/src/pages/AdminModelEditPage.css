@@ -300,13 +300,23 @@
 .admin-model-edit-form input,
 .admin-model-edit-form textarea,
 .admin-model-edit-form select {
-  background: transparent;
+  background: var(--theme-bg);
   border: 1px solid var(--theme-border);
   color: var(--theme-text);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 12px;
   outline: none;
   padding: 12px;
+}
+
+.admin-model-edit-form select option {
+  background: var(--theme-surface);
+  color: var(--theme-text);
+}
+
+.admin-model-edit-form select option:checked {
+  background: var(--theme-button-bg);
+  color: var(--theme-button-text);
 }
 
 .admin-model-edit-form input:disabled {

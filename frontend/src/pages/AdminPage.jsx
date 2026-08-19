@@ -5,22 +5,28 @@ import MainLayout from '../layouts/MainLayout';
 import { auth, db } from '../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { deleteScoutSubmission, getContactSubmissions, getScoutSubmissions } from '../services/adminService';
-import { getAdminArticles, saveAdminArticles } from '../services/articlesService';
+import { getAdminArticles, saveAdminArticles, saveAdminArticlesLocal } from '../services/articlesService';
 import { getAdminModels, saveAdminModels } from '../services/modelsService';
+import { ARTICLE_CATEGORIES, getArticleCategoryLabel } from '../constants/articleCategories';
 import getScoutedDemoPhoto from '../assets/images/get-scouted-bg.png';
 import { uploadToAzureBlob } from '../services/azureStorageService';
+import { imageFileToCompressedDataUrl } from '../utils/imageCompression';
 import './AdminPage.css';
 
 const ADMIN_EMAILS = ['televisionneverenough@gmail.com', 'test@nobles.com', 'noblesadmintest@gmail.com'];
 const TABS = [
   { id: 'articles', label: 'Articles' },
+  { id: 'club-nobles', label: 'Club Nobles' },
   { id: 'models', label: 'Models' },
   { id: 'contact', label: 'Contact Messages' },
   { id: 'scouted', label: 'Get Scouted' },
   { id: 'accounts', label: 'Accounts' },
 ];
 
-const emptyArticle = { title: '', author: '', dateWritten: '', content: '', cover: '', coverFileName: '', showOnArticlesPage: true };
+const CLUB_NOBLES_SECTION = 'club-nobles';
+const emptyArticle = { title: '', author: '', dateWritten: '', section: CLUB_NOBLES_SECTION, category: 'articles', content: '', cover: '', coverFileName: '', showOnArticlesPage: false };
+const emptyClubNoblesItem = { title: '', author: '', dateWritten: '', section: CLUB_NOBLES_SECTION, category: 'recent-shoots', content: '', cover: '', coverFileName: '', showOnArticlesPage: false };
+const CLUB_NOBLES_ADMIN_CATEGORIES = ARTICLE_CATEGORIES.filter((category) => category.value !== 'articles');
 const emptyModel = {
   firstName: '',
   middleName: '',
@@ -39,7 +45,7 @@ const emptyModel = {
   quote: '',
   coverImage: '',
   photoFileName: '',
-  showOnModelsPage: true,
+  showOnModelsPage: false,
 };
 
 const MODEL_DIVISIONS = [
@@ -53,6 +59,13 @@ const applyCapConDefaults = (model) => (
   model.division === 'capcon'
     ? { ...model, location: 'Canada', basedIn: 'Calgary' }
     : model
+);
+
+const imageOnlyArticleCategories = new Set(['recent-shoots', 'magazine-features']);
+const writtenClubNoblesArticleCategories = new Set(['articles', 'agency-announcements']);
+const isClubNoblesArticle = (article) => (
+  article.section === CLUB_NOBLES_SECTION
+  || ARTICLE_CATEGORIES.some((category) => category.value === article.category)
 );
 
 const demoContactSubmission = {
@@ -106,6 +119,17 @@ const formatDate = (value) => {
   return String(value);
 };
 
+const getModelTimestamp = (model) => {
+  const value = model.updatedAt;
+
+  if (!value) return 0;
+  if (value.toMillis) return value.toMillis();
+  if (value.seconds) return value.seconds * 1000;
+
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? 0 : date.getTime();
+};
+
 const buildModelName = ({ firstName, middleName, lastName, name = '' }) => (
   [firstName, middleName, lastName].filter(Boolean).join(' ').trim() || name.trim()
 );
@@ -120,11 +144,16 @@ const AdminPage = () => {
   const [articles, setArticles] = useState([]);
   const [models, setModels] = useState([]);
   const [articleForm, setArticleForm] = useState(emptyArticle);
+  const [clubNoblesForm, setClubNoblesForm] = useState(emptyClubNoblesItem);
   const [modelForm, setModelForm] = useState(emptyModel);
   const [articleSearchTerm, setArticleSearchTerm] = useState('');
+  const [clubNoblesSearchTerm, setClubNoblesSearchTerm] = useState('');
+  const [adminArticleCategoryFilter, setAdminArticleCategoryFilter] = useState('recent-shoots');
   const [modelSearchTerm, setModelSearchTerm] = useState('');
   const [accountSearchTerm, setAccountSearchTerm] = useState('');
   const [adminModelDivisionFilter, setAdminModelDivisionFilter] = useState('international');
+  const [adminModelStatusFilter, setAdminModelStatusFilter] = useState('all');
+  const [adminModelSort, setAdminModelSort] = useState('order');
   const [draggedAdminCard, setDraggedAdminCard] = useState(null);
   const [dragOverAdminCard, setDragOverAdminCard] = useState(null);
   const [contactSubmissions, setContactSubmissions] = useState([]);
@@ -139,23 +168,52 @@ const AdminPage = () => {
   const currentEmail = authUser?.email?.toLowerCase() || '';
   const isAdmin = ADMIN_EMAILS.includes(currentEmail);
   const normalizedArticleSearch = articleSearchTerm.trim().toLowerCase();
+  const normalizedClubNoblesSearch = clubNoblesSearchTerm.trim().toLowerCase();
   const normalizedModelSearch = modelSearchTerm.trim().toLowerCase();
   const normalizedAccountSearch = accountSearchTerm.trim().toLowerCase();
+  const activeClubNoblesCategory = adminArticleCategoryFilter;
+  const activeClubNoblesCategoryLabel = getArticleCategoryLabel(activeClubNoblesCategory);
   const visibleAdminArticles = articles.filter((article) => (
-    !normalizedArticleSearch
-    || article.title?.toLowerCase().includes(normalizedArticleSearch)
-    || article.author?.toLowerCase().includes(normalizedArticleSearch)
-    || article.content?.toLowerCase().includes(normalizedArticleSearch)
-  ));
-  const visibleAdminModels = models.filter((model) => (
-    model.division === adminModelDivisionFilter
+    article.category === 'articles'
     && (
-      !normalizedModelSearch
-      || model.name?.toLowerCase().includes(normalizedModelSearch)
-      || model.location?.toLowerCase().includes(normalizedModelSearch)
-      || model.basedIn?.toLowerCase().includes(normalizedModelSearch)
+      !normalizedArticleSearch
+      || article.title?.toLowerCase().includes(normalizedArticleSearch)
+      || article.author?.toLowerCase().includes(normalizedArticleSearch)
+      || article.content?.toLowerCase().includes(normalizedArticleSearch)
     )
   ));
+  const visibleAdminClubNobles = articles.filter((article) => (
+    isClubNoblesArticle(article)
+    && article.category !== 'articles'
+    && article.category === activeClubNoblesCategory
+    && (
+      !normalizedClubNoblesSearch
+      || article.title?.toLowerCase().includes(normalizedClubNoblesSearch)
+      || article.author?.toLowerCase().includes(normalizedClubNoblesSearch)
+      || getArticleCategoryLabel(article.category).toLowerCase().includes(normalizedClubNoblesSearch)
+      || article.content?.toLowerCase().includes(normalizedClubNoblesSearch)
+    )
+  ));
+  const sortedAdminModels = [...models].sort((firstModel, secondModel) => {
+    if (adminModelSort !== 'recent') return 0;
+
+    return getModelTimestamp(secondModel) - getModelTimestamp(firstModel);
+  });
+  const visibleAdminModels = sortedAdminModels.filter((model) => {
+    const matchesStatus = adminModelStatusFilter === 'all'
+      || (adminModelStatusFilter === 'hidden' && model.showOnModelsPage === false);
+
+    return (
+      model.division === adminModelDivisionFilter
+      && matchesStatus
+      && (
+        !normalizedModelSearch
+        || model.name?.toLowerCase().includes(normalizedModelSearch)
+        || model.location?.toLowerCase().includes(normalizedModelSearch)
+        || model.basedIn?.toLowerCase().includes(normalizedModelSearch)
+      )
+    );
+  });
   const displayedContactSubmissions = contactSubmissions.length > 0 ? contactSubmissions : [demoContactSubmission];
   const displayedScoutSubmissions = scoutSubmissions.length > 0 ? scoutSubmissions : [demoScoutSubmission];
   const displayedAccounts = accounts.length > 0 ? accounts : [demoAccount];
@@ -167,6 +225,10 @@ const AdminPage = () => {
     || account.phoneNumber?.toLowerCase().includes(normalizedAccountSearch)
   ));
   const isCapConModelForm = modelForm.division === 'capcon';
+  const isImageOnlyClubNoblesForm = imageOnlyArticleCategories.has(clubNoblesForm.category);
+  const isAgencyAnnouncementClubNoblesForm = clubNoblesForm.category === 'agency-announcements';
+  const isWrittenClubNoblesForm = writtenClubNoblesArticleCategories.has(clubNoblesForm.category);
+  const isMembershipArticleClubNoblesForm = clubNoblesForm.category === 'articles';
 
   useEffect(() => {
     if (TABS.some((tab) => tab.id === requestedTab) && requestedTab !== activeTab) {
@@ -247,6 +309,19 @@ const AdminPage = () => {
     setArticleForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
+  const handleClubNoblesChange = (e) => {
+    const { name, value, checked, type } = e.target;
+    setClubNoblesForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+    if (name === 'category') {
+      setAdminArticleCategoryFilter(value);
+    }
+  };
+
+  const selectClubNoblesCategory = (category) => {
+    setAdminArticleCategoryFilter(category);
+    setClubNoblesForm((prev) => ({ ...prev, category }));
+  };
+
   const handleModelChange = (e) => {
     const { name, value, checked, type } = e.target;
     setModelForm((prev) => {
@@ -265,6 +340,26 @@ const AdminPage = () => {
     const cover = await uploadToAzureBlob(file, 'articles');
 
     setArticleForm((prev) => ({
+      ...prev,
+      cover,
+      coverFileName: file.name,
+    }));
+  } catch (error) {
+    console.error(error);
+    window.alert(error.message);
+  }
+};
+
+ const handleClubNoblesCoverChange = async (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  try {
+    setSubmissionError('');
+
+    const cover = await imageFileToCompressedDataUrl(file);
+
+    setClubNoblesForm((prev) => ({
       ...prev,
       cover,
       coverFileName: file.name,
@@ -302,6 +397,8 @@ const AdminPage = () => {
 
     const nextArticle = {
       ...articleForm,
+      section: CLUB_NOBLES_SECTION,
+      category: 'articles',
       slug,
       dateWritten: articleForm.dateWritten || new Date().toISOString().split('T')[0],
     };
@@ -314,9 +411,47 @@ const AdminPage = () => {
     setArticleForm(emptyArticle);
   };
 
-  const removeArticle = async (slug) => {
+  const addClubNoblesItem = async (e) => {
+    e.preventDefault();
+    const categoryLabel = getArticleCategoryLabel(clubNoblesForm.category);
+    const fallbackTitle = `${categoryLabel} ${new Date().toLocaleDateString()}`;
+    const articleTitle = isImageOnlyClubNoblesForm ? fallbackTitle : clubNoblesForm.title;
+    const slugBase = isImageOnlyClubNoblesForm
+      ? `${articleTitle}-${Date.now()}`
+      : articleTitle;
+    const slug = makeSlug(slugBase);
+    if (!slug) return;
+    if (isImageOnlyClubNoblesForm && !clubNoblesForm.cover) return;
+    if (isWrittenClubNoblesForm && !clubNoblesForm.content.trim()) return;
+
+    const nextArticle = {
+      ...clubNoblesForm,
+      title: articleTitle,
+      author: isImageOnlyClubNoblesForm ? 'The Nobles Management' : clubNoblesForm.author,
+      section: CLUB_NOBLES_SECTION,
+      slug,
+      dateWritten: clubNoblesForm.dateWritten || new Date().toISOString().split('T')[0],
+      content: isImageOnlyClubNoblesForm ? '' : clubNoblesForm.content,
+      cover: isAgencyAnnouncementClubNoblesForm ? '' : clubNoblesForm.cover,
+      coverFileName: isAgencyAnnouncementClubNoblesForm ? '' : clubNoblesForm.coverFileName,
+    };
+    const nextArticles = [
+      ...articles.filter((article) => article.slug !== slug),
+      nextArticle,
+    ];
+    setArticles(nextArticles);
+    await saveAdminArticlesLocal(nextArticles);
+    setClubNoblesForm(emptyClubNoblesItem);
+  };
+
+  const removeArticle = async (slug, localOnly = false) => {
     const nextArticles = articles.filter((article) => article.slug !== slug);
     setArticles(nextArticles);
+    if (localOnly) {
+      await saveAdminArticlesLocal(nextArticles);
+      return;
+    }
+
     await saveAdminArticles(nextArticles);
   };
 
@@ -324,13 +459,18 @@ const AdminPage = () => {
     navigate(`/admin/articles/${article.slug}/edit`);
   };
 
-  const toggleArticleVisibility = async (slug) => {
+  const toggleArticleVisibility = async (slug, localOnly = false) => {
     const nextArticles = articles.map((article) => (
       article.slug === slug
         ? { ...article, showOnArticlesPage: article.showOnArticlesPage === false }
         : article
     ));
     setArticles(nextArticles);
+    if (localOnly) {
+      await saveAdminArticlesLocal(nextArticles);
+      return;
+    }
+
     await saveAdminArticles(nextArticles);
   };
 
@@ -393,9 +533,12 @@ const AdminPage = () => {
   const moveAdminCard = async (type, fromIndex, toIndex) => {
     if (fromIndex === null || fromIndex === toIndex) return;
 
-    if (type === 'articles') {
-      const fromArticle = visibleAdminArticles[fromIndex];
-      const toArticle = visibleAdminArticles[toIndex];
+    if (type === 'articles' || type === 'club-nobles') {
+      const visibleArticles = type === 'club-nobles'
+        ? visibleAdminClubNobles
+        : visibleAdminArticles;
+      const fromArticle = visibleArticles[fromIndex];
+      const toArticle = visibleArticles[toIndex];
       const fromArticleIndex = articles.findIndex((article) => article.slug === fromArticle?.slug);
       const toArticleIndex = articles.findIndex((article) => article.slug === toArticle?.slug);
 
@@ -406,6 +549,11 @@ const AdminPage = () => {
       const adjustedToIndex = fromArticleIndex < toArticleIndex ? toArticleIndex - 1 : toArticleIndex;
       nextArticles.splice(adjustedToIndex, 0, movedArticle);
       setArticles(nextArticles);
+      if (type === 'club-nobles') {
+        await saveAdminArticlesLocal(nextArticles);
+        return;
+      }
+
       await saveAdminArticles(nextArticles);
       return;
     }
@@ -542,7 +690,7 @@ const AdminPage = () => {
             </form>
 
             <div className="admin-list admin-model-list">
-              <h2>Added Articles</h2>
+              <h2>Articles</h2>
               <input
                 type="text"
                 className="admin-search"
@@ -593,6 +741,128 @@ const AdminPage = () => {
                   </div>
                 </article>
               )) : <p className="admin-empty">No admin articles found.</p>}
+            </div>
+          </section>
+        )}
+
+        {activeTab === 'club-nobles' && (
+          <section className="admin-section">
+            <form className="admin-form" onSubmit={addClubNoblesItem}>
+              <h2>Add {activeClubNoblesCategoryLabel}</h2>
+              <select name="category" value={clubNoblesForm.category} onChange={handleClubNoblesChange}>
+                {CLUB_NOBLES_ADMIN_CATEGORIES.map((category) => (
+                  <option value={category.value} key={category.value}>{category.label}</option>
+                ))}
+              </select>
+              {isWrittenClubNoblesForm && (
+                <>
+                  <input name="title" placeholder="Title" value={clubNoblesForm.title} onChange={handleClubNoblesChange} required />
+                  <input name="author" placeholder="Author" value={clubNoblesForm.author} onChange={handleClubNoblesChange} required />
+                  <input type="date" name="dateWritten" value={clubNoblesForm.dateWritten} onChange={handleClubNoblesChange} />
+                  <textarea
+                    name="content"
+                    placeholder={isMembershipArticleClubNoblesForm ? 'Article content' : 'Announcement content'}
+                    value={clubNoblesForm.content}
+                    onChange={handleClubNoblesChange}
+                    required
+                  />
+                </>
+              )}
+              {(isImageOnlyClubNoblesForm || isMembershipArticleClubNoblesForm) && (
+                <>
+                  <div className="admin-upload-field">
+                    <span className="admin-upload-title">
+                      {isMembershipArticleClubNoblesForm ? 'Article Cover Image' : `${getArticleCategoryLabel(clubNoblesForm.category)} Image`}
+                    </span>
+                    <label className="upload-label-btn">
+                      <span>Add a File</span>
+                      <input type="file" accept="image/*" onChange={handleClubNoblesCoverChange} required={isImageOnlyClubNoblesForm} />
+                    </label>
+                    <span className="upload-filename">{clubNoblesForm.coverFileName || 'No file chosen'}</span>
+                  </div>
+                  {clubNoblesForm.cover && <img src={clubNoblesForm.cover} alt="Club Nobles preview" className="admin-image-preview" />}
+                </>
+              )}
+              <label className="admin-toggle-row">
+                <input
+                  type="checkbox"
+                  name="showOnArticlesPage"
+                  checked={clubNoblesForm.showOnArticlesPage}
+                  onChange={handleClubNoblesChange}
+                />
+                <span>Show on Club Nobles page</span>
+              </label>
+              <div className="admin-form-actions">
+                <button type="submit">Add {activeClubNoblesCategoryLabel}</button>
+              </div>
+            </form>
+
+            <div className="admin-list admin-model-list">
+              <h2>{activeClubNoblesCategoryLabel}</h2>
+              <input
+                type="text"
+                className="admin-search"
+                placeholder={`Search ${activeClubNoblesCategoryLabel}`}
+                value={clubNoblesSearchTerm}
+                onChange={(e) => setClubNoblesSearchTerm(e.target.value)}
+                aria-label="Search Club Nobles content"
+              />
+              <div className="admin-model-category-tabs" aria-label="Filter Club Nobles content by category">
+                {CLUB_NOBLES_ADMIN_CATEGORIES.map((category) => (
+                  <button
+                    type="button"
+                    className={adminArticleCategoryFilter === category.value ? 'admin-model-category-tab admin-model-category-tab-active' : 'admin-model-category-tab'}
+                    onClick={() => selectClubNoblesCategory(category.value)}
+                    key={category.value}
+                  >
+                    {category.label}
+                  </button>
+                ))}
+              </div>
+              {visibleAdminClubNobles.length > 0 ? visibleAdminClubNobles.map((article, index) => (
+                <article
+                  className={getAdminCardClassName('club-nobles', index, article.showOnArticlesPage === false)}
+                  draggable
+                  onDragStart={(e) => handleAdminCardDragStart(e, 'club-nobles', index)}
+                  onDragOver={(e) => handleAdminCardDragOver(e, 'club-nobles', index)}
+                  onDrop={(e) => handleAdminCardDrop(e, 'club-nobles', index)}
+                  onDragEnd={clearAdminCardDrag}
+                  key={article.slug}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => openArticleEditor(article)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      openArticleEditor(article);
+                    }
+                  }}
+                >
+                  {article.category !== 'agency-announcements' && (
+                    article.cover ? (
+                      <img src={article.cover} alt={article.title} className="admin-model-card-image" />
+                    ) : (
+                      <div className="admin-model-card-placeholder" />
+                    )
+                  )}
+                  <div className="admin-model-card-body">
+                    <h3>{article.title}</h3>
+                    <p>{getArticleCategoryLabel(article.category)} / {article.author} / {article.dateWritten}</p>
+                    <label className="admin-model-toggle" onClick={(e) => e.stopPropagation()}>
+                      <input
+                        type="checkbox"
+                        checked={article.showOnArticlesPage !== false}
+                        onChange={() => toggleArticleVisibility(article.slug, true)}
+                      />
+                      <span>Show on Club Nobles page</span>
+                    </label>
+                    <div className="admin-model-actions">
+                      <button type="button" onClick={(e) => { e.stopPropagation(); openArticleEditor(article); }}>Edit</button>
+                      <button type="button" onClick={(e) => { e.stopPropagation(); removeArticle(article.slug, true); }}>Remove</button>
+                    </div>
+                  </div>
+                </article>
+              )) : <p className="admin-empty">No {activeClubNoblesCategoryLabel} content found.</p>}
             </div>
           </section>
         )}
@@ -670,6 +940,26 @@ const AdminPage = () => {
                     {division.label}
                   </button>
                 ))}
+              </div>
+              <div className="admin-model-filter-row">
+                <select
+                  className="admin-search"
+                  value={adminModelStatusFilter}
+                  onChange={(e) => setAdminModelStatusFilter(e.target.value)}
+                  aria-label="Filter admin models by status"
+                >
+                  <option value="all">All model statuses</option>
+                  <option value="hidden">Hidden only</option>
+                </select>
+                <select
+                  className="admin-search"
+                  value={adminModelSort}
+                  onChange={(e) => setAdminModelSort(e.target.value)}
+                  aria-label="Sort admin models"
+                >
+                  <option value="order">Manual order</option>
+                  <option value="recent">Recently updated</option>
+                </select>
               </div>
               <h2>Added Models</h2>
               {visibleAdminModels.length > 0 ? visibleAdminModels.map((model, index) => (

@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
 import clubNoblesOne from '../assets/images/club-nobles-01.png';
 import clubNoblesTwo from '../assets/images/club-nobles-02.png';
@@ -10,7 +9,6 @@ import clubNoblesSix from '../assets/images/club-nobles-06.png';
 import ArticlesPage from './ArticlesPage';
 import { auth } from '../firebase';
 import { checkClubNoblesMembership } from '../services/membershipService';
-import { ROUTES } from '../constants';
 import './ClubNoblesPage.css';
 
 const ADMIN_EMAILS = ['televisionneverenough@gmail.com', 'test@nobles.com', 'noblesadmintest@gmail.com'];
@@ -47,7 +45,6 @@ const ClubNoblesPage = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const carouselRef = useRef(null);
   const pathwayRef = useRef(null);
-  const navigate = useNavigate();
 
   // const openCheckoutPage = async () => {
   //   const selectedPriceId = selectedPaymentPlan === 'two'
@@ -138,8 +135,6 @@ const ClubNoblesPage = () => {
   return (
     <MainLayout>
       <main className="club-nobles-page">
-        {isAdmin && <ArticlesPage embedded />}
-
         <section className="club-nobles-intro">
           <div className="club-nobles-hero-copy">
             <p className="club-nobles-eyebrow">The Nobles Management</p>
@@ -213,7 +208,7 @@ const ClubNoblesPage = () => {
             <p className="club-nobles-pathway-eyebrow">Pathway</p>
             <h2 id="club-nobles-pathway-title">The Club Nobles Timeline</h2>
             <h3>Requires account</h3>
-            <article className={isSignedIn ? 'club-nobles-prep-card' : 'club-nobles-prep-card-blurred'}>
+            <div className={isSignedIn ? 'club-nobles-prep-card' : 'club-nobles-prep-card-blurred'}>
               <p className="club-nobles-prep-kicker">Empowering the next generation of talent</p>
               <div className="club-nobles-prep-card-header">
                 <div className="club-nobles-prep-title-group">
@@ -245,11 +240,11 @@ const ClubNoblesPage = () => {
                 <li>Personal style and grooming</li>
                 <li>Social media and personal branding</li>
               </ul>
-            </article>
+            </div>
           </div>
 
           <div className="club-nobles-timeline">
-            <article className="club-nobles-timeline-item">
+            <div className="club-nobles-timeline-item">
               <span className="club-nobles-timeline-number">01</span>
               <div className="club-nobles-timeline-content">
                 <p className="club-nobles-timeline-meta">Ages 14+ / Investment: $450</p>
@@ -264,9 +259,9 @@ const ClubNoblesPage = () => {
                   Showcase pathway.
                 </p>
               </div>
-            </article>
+            </div>
 
-            <article className="club-nobles-timeline-item">
+            <div className="club-nobles-timeline-item">
               <span className="club-nobles-timeline-number">02</span>
               <div className="club-nobles-timeline-content">
                 <p className="club-nobles-timeline-meta">Ages 16+ / Invitation Only</p>
@@ -289,9 +284,9 @@ const ClubNoblesPage = () => {
                   there is no fee to participate.
                 </p>
               </div>
-            </article>
+            </div>
 
-            <article className="club-nobles-timeline-item">
+            <div className="club-nobles-timeline-item">
               <span className="club-nobles-timeline-number">03</span>
               <div className="club-nobles-timeline-content">
                 <p className="club-nobles-timeline-meta">Representation Pathway</p>
@@ -311,7 +306,7 @@ const ClubNoblesPage = () => {
                   and readiness for the next level.
                 </p>
               </div>
-            </article>
+            </div>
           </div>
         </section>
 

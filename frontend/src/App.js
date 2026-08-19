@@ -117,7 +117,15 @@ function App() {
           />
           <Route
             path={ROUTES.ARTICLES}
-            element={<ArticlesPage requireAdmin />}
+            element={(
+              <ArticlesPage
+                requireMembership
+                section="club-nobles"
+                eyebrow="Club Nobles"
+                title="Membership"
+                subtitle="Articles, recent shoots, agency announcements, and magazine features"
+              />
+            )}
           />
           <Route
             path={ROUTES.ARTICLE}

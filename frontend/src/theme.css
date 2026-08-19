@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   --theme-bg: #ffffff;
   --theme-surface: #ffffff;
   --theme-surface-muted: #f0f0f0;
@@ -14,6 +15,7 @@
 }
 
 html[data-theme='dark'] {
+  color-scheme: dark;
   --theme-bg: #0f0f11;
   --theme-surface: #171719;
   --theme-surface-muted: #242428;
@@ -31,6 +33,16 @@ html[data-theme='dark'] {
 body {
   color: var(--theme-text);
   background-color: var(--theme-bg);
+}
+
+select {
+  color: var(--theme-text);
+  background-color: var(--theme-bg);
+}
+
+select option {
+  color: var(--theme-text);
+  background-color: var(--theme-surface);
 }
 
 .App,

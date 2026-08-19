@@ -8,159 +8,9 @@ import {
 } from 'firebase/firestore';
 import { models } from '../data/models';
 import { auth, db } from '../firebase';
-import renePhoto from '../assets/images/Rene.png';
-import charlottePhoto from '../assets/images/models/Charlotte/imgi_1_4.jpg';
-import localTalentPhoto from '../assets/images/local-talent.png';
 
 const ADMIN_MODELS_KEY = 'noblesAdminModels';
 const MODELS_COLLECTION = 'adminModels';
-
-const demoAdminModels = [
-  {
-    slug: 'admin-demo-ava',
-    name: 'Ava Demo',
-    division: 'international',
-    location: 'Canada',
-    basedIn: 'Calgary',
-    agency: 'The Nobles Management',
-    coverImage: charlottePhoto,
-    portfolio: [charlottePhoto],
-    stats: {
-      height: "5'10\"",
-      bust: '32"',
-      waist: '24"',
-      hips: '35"',
-      shoeSize: '39',
-      hairColor: 'Blonde',
-      eyeColor: 'Hazel',
-    },
-    bio: null,
-    instagramHandle: null,
-    runwayShows: [],
-    featured: false,
-    showOnModelsPage: true,
-  },
-  {
-    slug: 'admin-demo-mila',
-    name: 'Mila Demo',
-    division: 'local',
-    location: 'Canada',
-    basedIn: 'Calgary',
-    agency: 'The Nobles Management',
-    coverImage: localTalentPhoto,
-    portfolio: [localTalentPhoto],
-    stats: {
-      height: "5'8\"",
-      bust: '33"',
-      waist: '25"',
-      hips: '36"',
-      shoeSize: '38',
-      hairColor: 'Brown',
-      eyeColor: 'Brown',
-    },
-    bio: null,
-    instagramHandle: null,
-    runwayShows: [],
-    featured: false,
-    showOnModelsPage: true,
-  },
-  {
-    slug: 'admin-demo-noah',
-    name: 'Noah Demo',
-    division: 'junior',
-    location: 'Canada',
-    basedIn: 'Calgary',
-    agency: 'The Nobles Management',
-    coverImage: renePhoto,
-    portfolio: [renePhoto],
-    stats: {
-      height: "5'7\"",
-      bust: '31"',
-      waist: '24"',
-      hips: '34"',
-      shoeSize: '37',
-      hairColor: 'Black',
-      eyeColor: 'Brown',
-    },
-    bio: null,
-    instagramHandle: null,
-    runwayShows: [],
-    featured: false,
-    showOnModelsPage: true,
-  },
-  {
-    slug: 'admin-demo-sienna',
-    name: 'Sienna Demo',
-    division: 'international',
-    location: 'Canada',
-    basedIn: 'Vancouver',
-    agency: 'The Nobles Management',
-    coverImage: renePhoto,
-    portfolio: [renePhoto],
-    stats: {
-      height: "5'9\"",
-      bust: '32"',
-      waist: '24"',
-      hips: '35"',
-      shoeSize: '39',
-      hairColor: 'Black',
-      eyeColor: 'Brown',
-    },
-    bio: null,
-    instagramHandle: null,
-    runwayShows: [],
-    featured: false,
-    showOnModelsPage: true,
-  },
-  {
-    slug: 'admin-demo-lena',
-    name: 'Lena Demo',
-    division: 'local',
-    location: 'Canada',
-    basedIn: 'Edmonton',
-    agency: 'The Nobles Management',
-    coverImage: charlottePhoto,
-    portfolio: [charlottePhoto],
-    stats: {
-      height: "5'6\"",
-      bust: '33"',
-      waist: '25"',
-      hips: '36"',
-      shoeSize: '38',
-      hairColor: 'Blonde',
-      eyeColor: 'Blue',
-    },
-    bio: null,
-    instagramHandle: null,
-    runwayShows: [],
-    featured: false,
-    showOnModelsPage: true,
-  },
-  {
-    slug: 'admin-demo-eli',
-    name: 'Eli Demo',
-    division: 'junior',
-    location: 'Canada',
-    basedIn: 'Calgary',
-    agency: 'The Nobles Management',
-    coverImage: localTalentPhoto,
-    portfolio: [localTalentPhoto],
-    stats: {
-      height: "5'8\"",
-      bust: '32"',
-      waist: '25"',
-      hips: '35"',
-      shoeSize: '40',
-      hairColor: 'Brown',
-      eyeColor: 'Hazel',
-    },
-    bio: null,
-    instagramHandle: null,
-    runwayShows: [],
-    featured: false,
-    showOnModelsPage: true,
-  },
-];
 
 const normalizeAdminModels = (adminModels) => (
   adminModels.map((model) => ({
@@ -176,13 +26,13 @@ const getStoredModels = () => {
     );
 
     if (!Array.isArray(savedModels)) {
-      return demoAdminModels;
+      return [];
     }
 
     return normalizeAdminModels(savedModels);
   } catch (error) {
     console.warn('Could not read stored admin models:', error);
-    return demoAdminModels;
+    return [];
   }
 };
 
@@ -214,7 +64,7 @@ const getFirestoreModels = async () => {
     snap.docs
       .map((modelDoc) => {
         const data = modelDoc.data();
-        const { updatedAt, updatedBy, ...model } = data;
+        const { updatedBy, ...model } = data;
 
         return {
           ...model,
@@ -349,12 +199,7 @@ export const getModelBySlug = async (slug) => {
 export const getAdminModels = async () => {
   try {
     const firestoreModels = await getFirestoreModels();
-
-    if (firestoreModels.length > 0) {
-      return firestoreModels;
-    }
-
-    return getStoredModels();
+    return firestoreModels.length > 0 ? firestoreModels : getStoredModels();
   } catch (error) {
     console.warn(
       'Firebase admin models unavailable:',

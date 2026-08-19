@@ -59,6 +59,14 @@
   margin: 0;
 }
 
+.article-cover-image {
+  display: block;
+  margin: 0 0 34px;
+  max-height: 720px;
+  object-fit: cover;
+  width: 100%;
+}
+
 @media (max-width: 768px) {
   .article-page {
     min-height: calc(100vh - 56px);

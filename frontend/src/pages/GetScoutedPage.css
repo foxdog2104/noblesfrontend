@@ -44,7 +44,32 @@
   font-size: 12px;
   font-weight: 400;
   color: var(--theme-text-muted);
+  margin: 0 0 18px;
+}
+
+.scouted-safety-notice {
+  border: 1px solid var(--theme-border-soft);
+  box-sizing: border-box;
   margin: 0 0 40px;
+  padding: 18px 20px;
+}
+
+.scouted-safety-notice h2 {
+  color: var(--theme-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+
+.scouted-safety-notice p {
+  color: var(--theme-text-muted);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.7;
+  margin: 0;
 }
 
 /* ─── Form structure ─────────────────────────────── */
@@ -160,8 +185,8 @@
 }
 
 .form-select option {
-  background: #fff;
-  color: #000;
+  background: var(--theme-surface);
+  color: var(--theme-text);
 }
 
 /* Radio */

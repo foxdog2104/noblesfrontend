@@ -21,7 +21,7 @@ export const ROUTES = {
   ADMIN_ACCOUNT: '/admin/accounts/:accountId',
   ADMIN_CONTACT_MESSAGE: '/admin/contact-messages/:messageId',
   ADMIN_SCOUT_MEDIA: '/admin/get-scouted/:submissionId/media',
-  ARTICLES: '/articles',
+  ARTICLES: '/membership',
   ARTICLE: '/articles/:slug',
   MODEL_PAGE: '/test-model-page',
   MODEL_PROFILE: '/models/:slug'

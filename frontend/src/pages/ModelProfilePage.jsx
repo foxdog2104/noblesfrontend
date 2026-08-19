@@ -47,7 +47,7 @@ const ModelProfilePage = () => {
 
   return (
     <MainLayout>
-      <div className="profile-page">
+      <div className={`profile-page${isCapCon ? ' profile-page-capcon' : ''}`}>
 
         {/* Header */}
         <header className="profile-header">

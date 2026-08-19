@@ -123,13 +123,30 @@
 .admin-form input,
 .admin-form textarea,
 .admin-form select {
-  background: transparent;
+  background: var(--theme-bg);
   border: 1px solid var(--theme-border);
   color: var(--theme-text);
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 12px;
   outline: none;
   padding: 12px;
+}
+
+.admin-form select option,
+.admin-search option {
+  background: var(--theme-surface);
+  color: var(--theme-text);
+}
+
+.admin-form select option:checked,
+.admin-search option:checked {
+  background: var(--theme-button-bg);
+  color: var(--theme-button-text);
+}
+
+.admin-form select:focus {
+  background: var(--theme-surface);
+  border-color: var(--theme-text);
 }
 
 .admin-form input:disabled {
@@ -246,6 +263,17 @@
   grid-column: 1 / -1;
 }
 
+.admin-model-filter-row {
+  display: grid;
+  gap: 10px;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.admin-model-filter-row .admin-search {
+  grid-column: auto;
+}
+
 .admin-model-category-tab {
   background: transparent;
   border: 1px solid var(--theme-border);
@@ -263,8 +291,8 @@
 
 .admin-model-category-tab:hover,
 .admin-model-category-tab-active {
-  background: #fff;
-  color: #000;
+  background: var(--theme-button-bg);
+  color: var(--theme-button-text);
 }
 
 
@@ -498,6 +526,10 @@
   .admin-form-grid,
   .admin-name-grid,
   .admin-model-list {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-model-filter-row {
     grid-template-columns: 1fr;
   }
 }
@@ -844,7 +876,7 @@
 
 
 .admin-search {
-  background: transparent;
+  background: var(--theme-bg);
   border: 1px solid var(--theme-border);
   box-sizing: border-box;
   color: var(--theme-text);
@@ -856,6 +888,11 @@
   padding: 12px 14px;
   text-transform: uppercase;
   width: 100%;
+}
+
+.admin-search:focus {
+  background: var(--theme-surface);
+  border-color: var(--theme-text);
 }
 
 .admin-search-panel {

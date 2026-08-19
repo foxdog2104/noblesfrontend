@@ -1,7 +1,19 @@
+import { auth } from '../firebase';
+
 const MEMBERSHIP_API_URL = process.env.REACT_APP_MEMBERSHIP_API_URL || 'http://localhost:5000';
 
-export const getCurrentUser = async () =>
-  JSON.parse(localStorage.getItem('noblesTestUser') || 'null');
+export const getCurrentUser = async () => {
+  const firebaseUser = auth.currentUser;
+  if (firebaseUser?.email) {
+    return {
+      uid: firebaseUser.uid,
+      email: firebaseUser.email,
+      displayName: firebaseUser.displayName || '',
+    };
+  }
+
+  return JSON.parse(localStorage.getItem('noblesTestUser') || 'null');
+};
 
 export const getClubNoblesMembership = async (email) => {
   const response = await fetch(`${MEMBERSHIP_API_URL}/api/memberships/${encodeURIComponent(email)}`);

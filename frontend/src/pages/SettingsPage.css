@@ -180,6 +180,114 @@
   margin-top: 6px;
 }
 
+.settings-crop-overlay {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.72);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 24px;
+  position: fixed;
+  z-index: 3000;
+}
+
+.settings-crop-dialog {
+  background: var(--theme-bg);
+  border: 1px solid var(--theme-border-soft);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+  color: var(--theme-text);
+  max-width: 420px;
+  padding: 26px;
+  width: min(100%, 420px);
+}
+
+.settings-crop-header h2 {
+  color: var(--theme-text);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.08em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.settings-crop-header p {
+  color: var(--theme-text-muted);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  margin: 0 0 18px;
+}
+
+.settings-crop-frame {
+  aspect-ratio: 1;
+  background: var(--theme-border-soft);
+  cursor: grab;
+  margin: 0 auto 18px;
+  max-width: 280px;
+  overflow: hidden;
+  position: relative;
+  touch-action: none;
+  user-select: none;
+  width: 100%;
+}
+
+.settings-crop-frame:active {
+  cursor: grabbing;
+}
+
+.settings-crop-frame::after {
+  border: 2px solid rgba(255, 255, 255, 0.94);
+  border-radius: 50%;
+  box-shadow: 0 0 0 999px rgba(0, 0, 0, 0.18);
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.settings-crop-frame::before {
+  border: 1px solid rgba(0, 0, 0, 0.28);
+  border-radius: 50%;
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+.settings-crop-image {
+  height: 100%;
+  left: 50%;
+  object-fit: cover;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform-origin: center;
+  width: 100%;
+}
+
+.settings-crop-zoom {
+  color: var(--theme-text-muted);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  gap: 10px;
+  letter-spacing: 0.16em;
+  margin-bottom: 22px;
+  text-transform: uppercase;
+}
+
+.settings-crop-zoom input {
+  accent-color: var(--theme-text);
+}
+
+.settings-crop-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
 .settings-char-count {
   align-self: flex-end;
   color: var(--theme-text-muted);
@@ -454,5 +562,13 @@
 
   .settings-button {
     align-self: stretch;
+  }
+
+  .settings-crop-dialog {
+    padding: 20px;
+  }
+
+  .settings-crop-actions {
+    flex-direction: column;
   }
 }

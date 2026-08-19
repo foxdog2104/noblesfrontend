@@ -6,6 +6,7 @@ import { auth } from '../firebase';
 import { ROUTES } from '../constants';
 import { getAdminModels, saveAdminModels } from '../services/modelsService';
 import { clearAdminModelEditDraft, getAdminModelEditDraft, setAdminModelEditDraft } from '../services/adminModelDraftStore';
+import { imageFileToCompressedDataUrl } from '../utils/imageCompression';
 import arrowLeft from '../assets/images/arrow-left.svg';
 import './AdminModelEditPage.css';
 
@@ -61,13 +62,6 @@ const splitModelName = (name = '') => {
 const buildModelName = ({ firstName, middleName, lastName }) => (
   [firstName, middleName, lastName].filter(Boolean).join(' ').trim()
 );
-
-const readImageFile = (file) => new Promise((resolve, reject) => {
-  const reader = new FileReader();
-  reader.onload = () => resolve(reader.result);
-  reader.onerror = reject;
-  reader.readAsDataURL(file);
-});
 
 const getUniqueImages = (model) => {
   const images = [model.coverImage, ...(model.portfolio || [])].filter(Boolean);
@@ -206,7 +200,9 @@ const AdminModelEditPage = () => {
     const selectedFiles = Array.from(e.target.files || []);
     if (!selectedFiles.length) return;
 
-    const newImages = await Promise.all(selectedFiles.map(readImageFile));
+    const newImages = await Promise.all(
+      selectedFiles.map((file) => imageFileToCompressedDataUrl(file))
+    );
     setForm((prev) => ({
       ...prev,
       images: [...prev.images, ...newImages],

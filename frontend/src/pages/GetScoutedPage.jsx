@@ -345,6 +345,14 @@ const GetScoutedPage = () => {
             Join our roster and showcase your individuality to top industry professionals.
           </p>
 
+          <section className="scouted-safety-notice" aria-label="Application safety notice">
+            <h2>Application Safety</h2>
+            <p>
+              The Nobles Management will never ask for nude photos, lingerie photos, or payment to apply.
+              If someone contacts you claiming to represent us and something feels wrong, verify with us directly before responding.
+            </p>
+          </section>
+
           {submitError && <p className="scouted-message scouted-error">{submitError}</p>}
           {submitMessage && <p className="scouted-message scouted-success">{submitMessage}</p>}
 

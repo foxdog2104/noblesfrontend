@@ -64,6 +64,7 @@ const NavBar = () => {
           <Link to={ROUTES.LOCAL} className="nav-link">Local</Link>
           <Link to={ROUTES.JUNIOR} className="nav-link">Junior</Link>
           <Link to={ROUTES.CAPCON} className="nav-link">CapCon</Link>
+          <Link to={ROUTES.ARTICLES} className="nav-link">Membership</Link>
           <Link to={ROUTES.CONTACT} className="nav-link">Contact</Link>
         </div>
 
