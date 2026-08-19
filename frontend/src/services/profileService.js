@@ -44,6 +44,16 @@ const DEFAULT_MEASUREMENTS = {
   eyeColor: '',
 };
 
+const resolveAvatarUrl = (uid, firestoreAvatarUrl) => {
+  if (PROFILE_AVATAR_STORAGE_MODE === 'backend') {
+    return firestoreAvatarUrl || null;
+  }
+ 
+  const localAvatarUrl = getLocalAvatars()[uid] || null;
+  return localAvatarUrl || firestoreAvatarUrl || null;
+};
+
+
 // Reads users/{uid}. Returns sensible defaults if the doc doesn't exist yet.
 export const getProfile = async (uid) => {
   const snapshot = await getDoc(doc(db, 'users', uid));
@@ -54,7 +64,7 @@ export const getProfile = async (uid) => {
       displayName: '',
       bio: '',
       basedIn: '',
-      avatarUrl: localAvatarUrl,
+      avatarUrl: resolveAvatarUrl(uid, null),
       deactivated: false,
       notifications: DEFAULT_NOTIFICATIONS,
       measurements: DEFAULT_MEASUREMENTS,
@@ -67,7 +77,7 @@ export const getProfile = async (uid) => {
     displayName: data.displayName || '',
     bio: data.bio || '',
     basedIn: data.basedIn || '',
-    avatarUrl: localAvatarUrl || data.avatarUrl || null,
+    avatarUrl: resolveAvatarUrl(uid, data.avatarUrl),
     deactivated: !!data.deactivated,
     notifications: { ...DEFAULT_NOTIFICATIONS, ...(data.notifications || {}) },
     measurements: { ...DEFAULT_MEASUREMENTS, ...(data.measurements || {}) },
