@@ -30,9 +30,10 @@ const ChatWidget = () => {
     setMessages((prev) => [...prev, { role: 'user', text }]);
     setInput('');
     setLoading(true);
-
+    console.log('Api link')
+    console.log(CHAT_API_URL)
     try {
-      const res = await fetch(CHAT_API_URL, {
+      const res = await fetch('https://nobleswebapp-fgb2dmh4evf6bzh8.eastus2-01.azurewebsites.net/api/v1/chat/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text }),
