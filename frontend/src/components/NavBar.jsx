@@ -11,7 +11,7 @@ import { auth } from '../firebase';
 const ADMIN_EMAILS = ['televisionneverenough@gmail.com', 'test@nobles.com', 'noblesadmintest@gmail.com'];
 const ADMIN_MOBILE_TABS = [
   { id: 'articles', label: 'Articles', to: ROUTES.ADMIN },
-  { id: 'club-nobles', label: 'Club Nobles', to: `${ROUTES.ADMIN}?tab=club-nobles` },
+  { id: 'club-nobles', label: 'Model League', to: `${ROUTES.ADMIN}?tab=club-nobles` },
   { id: 'models', label: 'Models', to: `${ROUTES.ADMIN}?tab=models` },
   { id: 'contact', label: 'Contact', to: `${ROUTES.ADMIN}?tab=contact` },
   { id: 'scouted', label: 'Scouted', to: `${ROUTES.ADMIN}?tab=scouted` },
@@ -116,6 +116,38 @@ const NavBar = () => {
       </div>
 
       {/* Mobile bottom tab bar */}
+      {!showAdminMobileTabs && (
+        <div className="navbar-mobile-top">
+          {currentUser ? (
+            <>
+              <Link to={ROUTES.SETTINGS} className={`mobile-top-link${path === ROUTES.SETTINGS ? ' mobile-top-link--active' : ''}`}>
+                Settings
+              </Link>
+              <button type="button" className="mobile-top-link mobile-top-button" onClick={handleLogout}>
+                Log Out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to={ROUTES.LOGIN} className={`mobile-top-link${path === ROUTES.LOGIN ? ' mobile-top-link--active' : ''}`}>
+                Login
+              </Link>
+              <Link to={ROUTES.SIGNUP} className={`mobile-top-link${path === ROUTES.SIGNUP ? ' mobile-top-link--active' : ''}`}>
+                Sign Up
+              </Link>
+            </>
+          )}
+          <Link to={ROUTES.CLUB_NOBLES} className={`mobile-top-link${path === ROUTES.CLUB_NOBLES ? ' mobile-top-link--active' : ''}`}>
+            Model League
+          </Link>
+          {isAdmin && (
+            <Link to={ROUTES.ADMIN} className={`mobile-top-link${path === ROUTES.ADMIN ? ' mobile-top-link--active' : ''}`}>
+              Admin
+            </Link>
+          )}
+        </div>
+      )}
+
       <div className={`navbar-mobile${showAdminMobileTabs ? ' navbar-mobile-admin' : ''}`}>
         {showAdminMobileTabs ? (
           <>
@@ -169,17 +201,25 @@ const NavBar = () => {
           </svg>
           <span>CapCon</span>
         </Link>
+        <Link to={ROUTES.ARTICLES} className={`mobile-tab${path === ROUTES.ARTICLES ? ' mobile-tab--active' : ''}`}>
+          <svg className="mobile-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M5 4h14v16H5z" />
+            <path d="M8 8h8M8 12h8M8 16h5" />
+          </svg>
+          <span>Member</span>
+        </Link>
+        <Link to={ROUTES.CONTACT} className={`mobile-tab${path === ROUTES.CONTACT ? ' mobile-tab--active' : ''}`}>
+          <svg className="mobile-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M4 5h16v14H4z" />
+            <path d="M4 7l8 6 8-6" />
+          </svg>
+          <span>Contact</span>
+        </Link>
         <Link to={ROUTES.GET_SCOUTED} className={`mobile-tab${path === ROUTES.GET_SCOUTED ? ' mobile-tab--active' : ''}`}>
           <svg className="mobile-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
           </svg>
           <span>Scout</span>
-        </Link>
-        <Link to={currentUser ? (isAdmin ? ROUTES.ADMIN : ROUTES.SETTINGS) : ROUTES.LOGIN} className={`mobile-tab${path === ROUTES.LOGIN || path === ROUTES.SIGNUP || path === ROUTES.SETTINGS || path === ROUTES.ADMIN ? ' mobile-tab--active' : ''}`}>
-          <svg className="mobile-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M15 3h6v18h-6M10 17l5-5-5-5M3 12h12" />
-          </svg>
-          <span>{currentUser ? (isAdmin ? 'Admin' : 'Settings') : 'Login'}</span>
         </Link>
           </>
         )}

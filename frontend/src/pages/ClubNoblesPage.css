@@ -643,11 +643,13 @@
 
   .club-nobles-prep-card-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
   }
 
   .club-nobles-prep-purchase-group {
     min-width: 0;
+    align-items: center;
   }
 
   .club-nobles-prep-card-header h3 {
