@@ -23,7 +23,7 @@ async function openCheckoutPage() {
         price_data: {
           currency: 'cad',
           product_data: {
-            name: 'Club Nobles Membership',
+            name: 'Role Models League Membership',
           },
           unit_amount: 450 * 100,
         },
@@ -137,24 +137,24 @@ const ClubNoblesPage = () => {
       <main className="club-nobles-page">
         <section className="club-nobles-intro">
           <div className="club-nobles-hero-copy">
-            <p className="club-nobles-eyebrow">The Nobles Management</p>
-            <h1 className="club-nobles-title">Club Nobles</h1>
+            <p className="club-nobles-eyebrow">Role Models</p>
+            <h1 className="club-nobles-title">Role Models League</h1>
             <p className="club-nobles-copy">
               where confidence meets opportunity
             </p>
           </div>
 
           <div className="club-nobles-details">
-            <h2>Club Nobles</h2>
+            <h2>Role Models League</h2>
             <p>
-              Club Nobles is part of The Nobles, a discovery and development
+              RML is part of Role Models, a discovery and development
               community for youth and young adults ages 12-21 to explore their
               confidence, creativity, and potential through fashion, beauty,
               wellness, and personal development.
             </p>
             <p>
               Built on the belief that confidence can be developed and
-              opportunity can be earned, Club Nobles provides a supportive
+              opportunity can be earned, RML provides a supportive
               "Beauty Bestie" environment where participants are encouraged to
               learn, connect, and grow.
             </p>
@@ -175,7 +175,7 @@ const ClubNoblesPage = () => {
 
         <section
           className="club-nobles-carousel"
-          aria-label="Club Nobles moments"
+          aria-label="RML moments"
           ref={carouselRef}
         >
           <h2 className="club-nobles-carousel-heading">
@@ -187,7 +187,7 @@ const ClubNoblesPage = () => {
                 type="button"
                 className="club-nobles-carousel-frame"
                 onClick={() => setActiveClubImageIndex(index % clubNoblesImages.length)}
-                aria-label={`View Club Nobles image ${(index % clubNoblesImages.length) + 1} full size`}
+                aria-label={`View RML image ${(index % clubNoblesImages.length) + 1} full size`}
                 key={`${image}-${index}`}
               >
                 <img src={image} alt="" className="club-nobles-carousel-image" />
@@ -206,7 +206,7 @@ const ClubNoblesPage = () => {
         >
           <div className="club-nobles-pathway-header">
             <p className="club-nobles-pathway-eyebrow">Pathway</p>
-            <h2 id="club-nobles-pathway-title">The Club Nobles Timeline</h2>
+            <h2 id="club-nobles-pathway-title">The RML Timeline</h2>
             <h3>Requires account</h3>
             <div className={isSignedIn ? 'club-nobles-prep-card' : 'club-nobles-prep-card-blurred'}>
               <p className="club-nobles-prep-kicker">Empowering the next generation of talent</p>
@@ -228,7 +228,7 @@ const ClubNoblesPage = () => {
                 </div>
               </div>
               <p className="club-nobles-prep-description">
-                The Prep is the foundation of The Nobles experience.
+                The Prep is the foundation of Role Models experience.
                 Participants receive development in professionalism and
                 industry etiquette, goal setting, and mindset. Completion of The
                 Prep is required before advancing to The Showcase pathway.
@@ -250,7 +250,7 @@ const ClubNoblesPage = () => {
                 <p className="club-nobles-timeline-meta">Ages 14+ / Investment: $450</p>
                 <h3>The Prep</h3>
                 <p>
-                  The Prep is the foundation of The Nobles experience.
+                  The Prep is the foundation of Role Models experience.
                   Participants receive development in professionalism and
                   industry etiquette, goal setting, and mindset.
                 </p>
@@ -269,7 +269,7 @@ const ClubNoblesPage = () => {
                 <p>
                   For a select few, the journey continues. Participants who
                   demonstrate exceptional professionalism, work ethic, and
-                  potential may be invited to join The Nobles Management's
+                  potential may be invited to join Role Models'
                   exclusive Image Athlete Program.
                 </p>
                 <p>
@@ -290,14 +290,14 @@ const ClubNoblesPage = () => {
               <span className="club-nobles-timeline-number">03</span>
               <div className="club-nobles-timeline-content">
                 <p className="club-nobles-timeline-meta">Representation Pathway</p>
-                <h3>The Nobles Management</h3>
+                <h3>Role Models</h3>
                 <p>
-                  The final stage of The Nobles pathway is representation
-                  through The Nobles Management.
+                  The final stage of Role Models pathway is representation
+                  through Role Models.
                 </p>
                 <p>
-                  As one of Canada's leading talent agencies, The Nobles
-                  Management represents select models and talent for commercial,
+                  As one of Canada's leading talent agencies, Role Models
+                  represents select models and talent for commercial,
                   editorial, and international opportunities.
                 </p>
                 <p>
@@ -321,7 +321,7 @@ const ClubNoblesPage = () => {
               type="button"
               className="club-nobles-lightbox-close"
               onClick={() => setActiveClubImageIndex(null)}
-              aria-label="Close Club Nobles image"
+              aria-label="Close RML image"
             >
               Close
             </button>
@@ -329,7 +329,7 @@ const ClubNoblesPage = () => {
               type="button"
               className="club-nobles-lightbox-arrow club-nobles-lightbox-arrow-left"
               onClick={showPreviousClubImage}
-              aria-label="View previous Club Nobles image"
+              aria-label="View previous RML image"
             >
               &lsaquo;
             </button>
@@ -347,7 +347,7 @@ const ClubNoblesPage = () => {
               type="button"
               className="club-nobles-lightbox-arrow club-nobles-lightbox-arrow-right"
               onClick={showNextClubImage}
-              aria-label="View next Club Nobles image"
+              aria-label="View next RML image"
             >
               &rsaquo;
             </button>

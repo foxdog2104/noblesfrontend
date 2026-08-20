@@ -16,7 +16,7 @@ import './AdminPage.css';
 const ADMIN_EMAILS = ['televisionneverenough@gmail.com', 'test@nobles.com', 'noblesadmintest@gmail.com'];
 const TABS = [
   { id: 'articles', label: 'Articles' },
-  { id: 'club-nobles', label: 'Club Nobles' },
+  { id: 'club-nobles', label: 'Model League' },
   { id: 'models', label: 'Models' },
   { id: 'contact', label: 'Contact Messages' },
   { id: 'scouted', label: 'Get Scouted' },

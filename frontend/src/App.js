@@ -121,7 +121,7 @@ function App() {
               <ArticlesPage
                 requireMembership
                 section="club-nobles"
-                eyebrow="Club Nobles"
+                eyebrow="Role Models League"
                 title="Membership"
                 subtitle="Articles, recent shoots, agency announcements, and magazine features"
               />

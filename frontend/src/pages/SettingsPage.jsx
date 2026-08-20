@@ -196,7 +196,7 @@ function ProfileSection({ firebaseUser, authLoading }) {
       const url = await uploadAvatar(firebaseUser.uid, croppedFile);
       setAvatarUrl(url);
       setSaved((prev) => ({ ...prev, avatarUrl: url }));
-      setSuccess('Profile picture saved locally.');
+      setSuccess('Profile picture saved.');
       closeCropDialog();
     } catch {
       setError('Could not upload that image. Try a smaller JPG or PNG.');
@@ -525,7 +525,7 @@ function MembershipSection({ status, loading }) {
           </>
         )}
         {status?.error && (
-          <p className="settings-error">Couldn't load your membership status. Try refreshing.</p>
+          <p className="settings-error">Couldn't load your membership status.</p>
         )}
       </div>
 
@@ -782,20 +782,22 @@ const SettingsPage = () => {
   const [authLoading, setAuthLoading] = useState(true);
   const navigate = useNavigate();
 
-  const refreshMembership = useCallback(() => {
+  const refreshMembership = useCallback((userOverride) => {
     setMembershipLoading(true);
-    checkClubNoblesMembership()
+    checkClubNoblesMembership(userOverride)
       .then(setStatus)
       .finally(() => setMembershipLoading(false));
   }, []);
 
   useEffect(() => {
-    refreshMembership();
-    window.addEventListener('nobles-auth-change', refreshMembership);
-    window.addEventListener('storage', refreshMembership);
+    const handleMembershipRefresh = () => refreshMembership(auth.currentUser);
+    window.addEventListener('nobles-auth-change', handleMembershipRefresh);
+    window.addEventListener('nobles-membership-change', handleMembershipRefresh);
+    window.addEventListener('storage', handleMembershipRefresh);
     return () => {
-      window.removeEventListener('nobles-auth-change', refreshMembership);
-      window.removeEventListener('storage', refreshMembership);
+      window.removeEventListener('nobles-auth-change', handleMembershipRefresh);
+      window.removeEventListener('nobles-membership-change', handleMembershipRefresh);
+      window.removeEventListener('storage', handleMembershipRefresh);
     };
   }, [refreshMembership]);
 
@@ -803,7 +805,7 @@ const SettingsPage = () => {
     const unsubscribe = onAuthStateChanged(auth, (u) => {
       setFirebaseUser(u);
       setAuthLoading(false);
-      refreshMembership();
+      refreshMembership(u);
     });
     return unsubscribe;
   }, [refreshMembership]);
@@ -818,7 +820,12 @@ const SettingsPage = () => {
   const content = {
     profile: <ProfileSection firebaseUser={firebaseUser} authLoading={authLoading} />,
     measurements: <MeasurementsSection firebaseUser={firebaseUser} authLoading={authLoading} />,
-    membership: <MembershipSection status={status} loading={membershipLoading} />,
+    membership: (
+      <MembershipSection
+        status={status}
+        loading={membershipLoading || authLoading}
+      />
+    ),
     security: <SecuritySection firebaseUser={firebaseUser} />,
     notifications: <NotificationsSection firebaseUser={firebaseUser} authLoading={authLoading} />,
   }[active];

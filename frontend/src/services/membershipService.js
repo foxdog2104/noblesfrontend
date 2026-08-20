@@ -2,8 +2,8 @@ import { auth } from '../firebase';
 
 const MEMBERSHIP_API_URL = process.env.REACT_APP_MEMBERSHIP_API_URL || 'http://localhost:5000';
 
-export const getCurrentUser = async () => {
-  const firebaseUser = auth.currentUser;
+export const getCurrentUser = async (userOverride) => {
+  const firebaseUser = userOverride || auth.currentUser;
   if (firebaseUser?.email) {
     return {
       uid: firebaseUser.uid,
@@ -52,8 +52,8 @@ export const createClubNoblesMembership = async ({
   return response.json();
 };
 
-export const checkClubNoblesMembership = async () => {
-  const user = await getCurrentUser();
+export const checkClubNoblesMembership = async (userOverride) => {
+  const user = await getCurrentUser(userOverride);
 
   if (!user?.email) {
     return {
