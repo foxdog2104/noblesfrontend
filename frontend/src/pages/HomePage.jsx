@@ -61,7 +61,7 @@ const HomePage = () => {
           <div className="hero-overlay" />
           <div className="hero-caption">
             <p className="hero-eyebrow">Calgary, Alberta</p>
-            <h1 className="hero-title">The Nobles<br />Management</h1>
+            <h1 className="hero-title">The Role<br />Models</h1>
           </div>
         </section>
 
@@ -160,7 +160,7 @@ const HomePage = () => {
             <p className="club-membership-eyebrow">
               {hasClubMembership ? 'Articles' : 'Membership'}
             </p>
-            <h2 className="club-membership-title">Club Nobles</h2>
+            <h2 className="club-membership-title">Role Models League</h2>
             <p className="club-membership-quote">
               {hasClubMembership ? 'keep up with the nobles' : 'develop your confidence'}
             </p>

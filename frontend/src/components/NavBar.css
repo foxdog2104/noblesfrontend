@@ -141,6 +141,16 @@ html.is-mobile .navbar-mobile {
   align-items: stretch;
 }
 
+html.is-mobile .navbar-mobile-admin {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+html.is-mobile .navbar-mobile-admin::-webkit-scrollbar {
+  display: none;
+}
+
 html.is-mobile .mobile-tab {
   flex: 1;
   display: flex;
@@ -153,6 +163,16 @@ html.is-mobile .mobile-tab {
   opacity: 1;
   transition: color 0.15s ease;
   padding: 6px 2px 2px;
+}
+
+html.is-mobile .navbar-mobile-admin .mobile-tab {
+  flex: 0 0 82px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+html.is-mobile .navbar-mobile-admin .mobile-tab-admin-home {
+  flex-basis: 58px;
 }
 
 html.is-mobile .mobile-tab--active {

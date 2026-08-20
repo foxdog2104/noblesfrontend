@@ -9,10 +9,19 @@ import { ROUTES } from '../constants';
 import { auth } from '../firebase';
 
 const ADMIN_EMAILS = ['televisionneverenough@gmail.com', 'test@nobles.com', 'noblesadmintest@gmail.com'];
+const ADMIN_MOBILE_TABS = [
+  { id: 'articles', label: 'Articles', to: ROUTES.ADMIN },
+  { id: 'club-nobles', label: 'Club Nobles', to: `${ROUTES.ADMIN}?tab=club-nobles` },
+  { id: 'models', label: 'Models', to: `${ROUTES.ADMIN}?tab=models` },
+  { id: 'contact', label: 'Contact', to: `${ROUTES.ADMIN}?tab=contact` },
+  { id: 'scouted', label: 'Scouted', to: `${ROUTES.ADMIN}?tab=scouted` },
+  { id: 'accounts', label: 'Accounts', to: `${ROUTES.ADMIN}?tab=accounts` },
+];
 
 const NavBar = () => {
   const location = useLocation();
   const path = location.pathname;
+  const activeAdminTab = new URLSearchParams(location.search).get('tab') || 'articles';
 
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem('theme');
@@ -45,6 +54,7 @@ const NavBar = () => {
   }, []);
 
   const isAdmin = ADMIN_EMAILS.includes(currentUser?.email?.toLowerCase());
+  const showAdminMobileTabs = isAdmin && path.startsWith(ROUTES.ADMIN);
 
   const handleLogout = async () => {
     await signOut(auth).catch(() => null);
@@ -76,7 +86,7 @@ const NavBar = () => {
 
         <div className="navbar-right">
           <Link to={ROUTES.GET_SCOUTED} className="nav-link">Get Scouted</Link>
-          <Link to={ROUTES.CLUB_NOBLES} className="nav-link">Club Nobles</Link>
+          <Link to={ROUTES.CLUB_NOBLES} className="nav-link">Model League</Link>
           {currentUser ? (
             <>
               <button type="button" className="nav-link nav-button" onClick={handleLogout}>Log Out</button>
@@ -106,7 +116,24 @@ const NavBar = () => {
       </div>
 
       {/* Mobile bottom tab bar */}
-      <div className="navbar-mobile">
+      <div className={`navbar-mobile${showAdminMobileTabs ? ' navbar-mobile-admin' : ''}`}>
+        {showAdminMobileTabs ? (
+          <>
+            <Link to={ROUTES.HOME} className="mobile-tab mobile-tab-admin-home">
+              <span>Home</span>
+            </Link>
+            {ADMIN_MOBILE_TABS.map((tab) => (
+              <Link
+                key={tab.id}
+                to={tab.to}
+                className={`mobile-tab${activeAdminTab === tab.id ? ' mobile-tab--active' : ''}`}
+              >
+                <span>{tab.label}</span>
+              </Link>
+            ))}
+          </>
+        ) : (
+          <>
         <Link to={ROUTES.HOME} className={`mobile-tab${path === ROUTES.HOME ? ' mobile-tab--active' : ''}`}>
           <svg className="mobile-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M3 9.75L12 3l9 6.75V21a1 1 0 01-1 1H4a1 1 0 01-1-1V9.75z" />
@@ -154,6 +181,8 @@ const NavBar = () => {
           </svg>
           <span>{currentUser ? (isAdmin ? 'Admin' : 'Settings') : 'Login'}</span>
         </Link>
+          </>
+        )}
       </div>
     </nav>
   );

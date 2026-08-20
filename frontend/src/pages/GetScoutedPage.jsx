@@ -348,7 +348,7 @@ const GetScoutedPage = () => {
           <section className="scouted-safety-notice" aria-label="Application safety notice">
             <h2>Application Safety</h2>
             <p>
-              The Nobles Management will never ask for nude photos, lingerie photos, or payment to apply.
+              The Role Models will never ask for nude photos, lingerie photos, or payment to apply.
               If someone contacts you claiming to represent us and something feels wrong, verify with us directly before responding.
             </p>
           </section>
