@@ -9,6 +9,10 @@ const getUniqueOptions = (items) => (
     .sort((first, second) => first.localeCompare(second))
 );
 
+const DIVISION_MODEL_LIMITS = {
+  capcon: 20,
+};
+
 const parseHeightInches = (value = '') => {
   const text = String(value).trim();
   const feetInches = text.match(/(\d+)\s*'\s*(\d+)?/);
@@ -89,7 +93,7 @@ const ModelsPage = ({ category = 'International' }) => {
     return true;
   };
 
-  const visibleModels = models.filter((model) => (
+  const matchingModels = models.filter((model) => (
     (
       !normalizedSearch
       || model.name?.toLowerCase().includes(normalizedSearch)
@@ -101,6 +105,8 @@ const ModelsPage = ({ category = 'International' }) => {
     && (!eyeFilter || model.stats?.eyeColor === eyeFilter)
     && matchesHeightFilter(model)
   ));
+  const divisionLimit = DIVISION_MODEL_LIMITS[category.toLowerCase()];
+  const visibleModels = divisionLimit ? matchingModels.slice(0, divisionLimit) : matchingModels;
 
   const hasActiveFilters = searchTerm
     || locationFilter
