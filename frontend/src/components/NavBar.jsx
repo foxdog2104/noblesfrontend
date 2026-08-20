@@ -7,6 +7,7 @@ import logo from '../assets/images/logo.svg';
 import logoDark from '../assets/images/logo-dark.svg';
 import { ROUTES } from '../constants';
 import { auth } from '../firebase';
+import { checkClubNoblesMembership } from '../services/membershipService';
 
 const ADMIN_EMAILS = ['televisionneverenough@gmail.com', 'test@nobles.com', 'noblesadmintest@gmail.com'];
 const ADMIN_MOBILE_TABS = [
@@ -31,6 +32,7 @@ const NavBar = () => {
   const [currentUser, setCurrentUser] = useState(() =>
     JSON.parse(localStorage.getItem('noblesTestUser') || 'null')
   );
+  const [hasClubMembership, setHasClubMembership] = useState(false);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
@@ -55,6 +57,30 @@ const NavBar = () => {
 
   const isAdmin = ADMIN_EMAILS.includes(currentUser?.email?.toLowerCase());
   const showAdminMobileTabs = isAdmin && path.startsWith(ROUTES.ADMIN);
+  const modelLeagueRoute = hasClubMembership && !isAdmin ? ROUTES.ARTICLES : ROUTES.CLUB_NOBLES;
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const syncMembership = async () => {
+      const membershipStatus = await checkClubNoblesMembership(auth.currentUser);
+      if (!cancelled) {
+        setHasClubMembership(Boolean(membershipStatus.active));
+      }
+    };
+
+    syncMembership();
+    window.addEventListener('storage', syncMembership);
+    window.addEventListener('nobles-auth-change', syncMembership);
+    window.addEventListener('nobles-membership-change', syncMembership);
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('storage', syncMembership);
+      window.removeEventListener('nobles-auth-change', syncMembership);
+      window.removeEventListener('nobles-membership-change', syncMembership);
+    };
+  }, [currentUser?.email]);
 
   const handleLogout = async () => {
     await signOut(auth).catch(() => null);
@@ -74,7 +100,6 @@ const NavBar = () => {
           <Link to={ROUTES.LOCAL} className="nav-link">Local</Link>
           <Link to={ROUTES.JUNIOR} className="nav-link">Junior</Link>
           <Link to={ROUTES.CAPCON} className="nav-link">CapCon</Link>
-          <Link to={ROUTES.ARTICLES} className="nav-link">Membership</Link>
           <Link to={ROUTES.CONTACT} className="nav-link">Contact</Link>
         </div>
 
@@ -86,7 +111,7 @@ const NavBar = () => {
 
         <div className="navbar-right">
           <Link to={ROUTES.GET_SCOUTED} className="nav-link">Get Scouted</Link>
-          <Link to={ROUTES.CLUB_NOBLES} className="nav-link">Model League</Link>
+          <Link to={modelLeagueRoute} className="nav-link">Model League</Link>
           {currentUser ? (
             <>
               <button type="button" className="nav-link nav-button" onClick={handleLogout}>Log Out</button>
@@ -137,7 +162,10 @@ const NavBar = () => {
               </Link>
             </>
           )}
-          <Link to={ROUTES.CLUB_NOBLES} className={`mobile-top-link${path === ROUTES.CLUB_NOBLES ? ' mobile-top-link--active' : ''}`}>
+          <Link
+            to={modelLeagueRoute}
+            className={`mobile-top-link${path === ROUTES.CLUB_NOBLES || path === ROUTES.ARTICLES ? ' mobile-top-link--active' : ''}`}
+          >
             Model League
           </Link>
           {isAdmin && (
@@ -200,13 +228,6 @@ const NavBar = () => {
             <path d="M9.5 12h5" />
           </svg>
           <span>CapCon</span>
-        </Link>
-        <Link to={ROUTES.ARTICLES} className={`mobile-tab${path === ROUTES.ARTICLES ? ' mobile-tab--active' : ''}`}>
-          <svg className="mobile-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M5 4h14v16H5z" />
-            <path d="M8 8h8M8 12h8M8 16h5" />
-          </svg>
-          <span>Member</span>
         </Link>
         <Link to={ROUTES.CONTACT} className={`mobile-tab${path === ROUTES.CONTACT ? ' mobile-tab--active' : ''}`}>
           <svg className="mobile-tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
