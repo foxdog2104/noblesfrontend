@@ -111,7 +111,7 @@ const ClubNoblesPage = () => {
     return null;
   }
 
-  if (hasClubMembership && !isAdmin) {
+  if (hasClubMembership || isAdmin) {
     return <ArticlesPage />;
   }
 
